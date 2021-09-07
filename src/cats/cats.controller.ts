@@ -4,6 +4,8 @@ import {
   ApiOperation,
   ApiResponse,
   ApiTags,
+  ApiBody,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -16,7 +18,11 @@ export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create cat' })
+  @ApiOperation({ summary: 'ApiOperation summary' })
+  // @ApiQuery({ name: 'role', enum: ['Admin', 'Moderator', 'User'] })
+
+  @ApiQuery({ name: 'role' })
+  // @ApiBody({ type: [CreateCatDto] })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   async create(@Body() createCatDto: CreateCatDto) {
     await this.catsService.create(createCatDto);

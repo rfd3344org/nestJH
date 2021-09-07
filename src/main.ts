@@ -9,8 +9,10 @@ async function bootstrap() {
     .setTitle('called setTitle')
     .setDescription('called setDescription')
     .setVersion('called setVersion')
-    .addTag('called addTag')
+    // .addTag('called addTag')
+    // .addBasicAuth()
     .addBearerAuth()
+    .addOAuth2()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
