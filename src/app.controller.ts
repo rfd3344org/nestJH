@@ -5,8 +5,8 @@ export class AppController {
   constructor() {}
 
   @Get()
-  @Redirect('/docs')
+  @Redirect('docs')
   getHello(): any {
-    // return 'go to page /api';
+    return { url: process.env.SWAGGER_URL };
   }
 }

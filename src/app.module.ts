@@ -1,15 +1,21 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { CatsModule } from './cats/cats.module';
 import { OwnersModule } from './owners/owners.module';
 
-const mongoDBUri = 'mongodb+srv://admin:admin@cluster0.giwpq.mongodb.net/nestDemo?retryWrites=true&w=majority';
+const formatMongoURL = () => {
+  const { MONGO_DB_NAME, MONGO_USER, MONGO_PASSWORD } = process.env;
+  return `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0.giwpq.mongodb.net/${MONGO_DB_NAME}?retryWrites=true&w=majority`;
+};
 
 @Module({
   imports: [
-    MongooseModule.forRoot(mongoDBUri),
+    ConfigModule.forRoot(),
+
+    MongooseModule.forRoot(formatMongoURL()),
     CatsModule,
     OwnersModule,
   ],

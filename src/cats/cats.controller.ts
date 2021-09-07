@@ -11,6 +11,7 @@ import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { Cat } from './schemas/cat.schema';
 
+console.log('3333 process', process.env.MONGO_DB_NAME);
 @Controller('cats')
 @ApiBearerAuth()
 @ApiTags('cats')
@@ -18,10 +19,9 @@ export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Post()
-  @ApiOperation({ summary: 'ApiOperation summary' })
-  // @ApiQuery({ name: 'role', enum: ['Admin', 'Moderator', 'User'] })
-
-  @ApiQuery({ name: 'role' })
+  @ApiOperation({ summary: 'called ApiOperation' })
+  @ApiQuery({ name: 'stringDemo',  })
+  @ApiQuery({ name: 'EnumDemo', enum: ['Admin', 'Moderator', 'User'] })
   // @ApiBody({ type: [CreateCatDto] })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   async create(@Body() createCatDto: CreateCatDto) {
@@ -36,6 +36,8 @@ export class CatsController {
     type: Cat,
   })
   async findAll(): Promise<Cat[]> {
+
+    console.warn('222process.env', process.env)
     return this.catsService.findAll();
   }
 }
