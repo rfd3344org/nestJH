@@ -10,7 +10,6 @@ import { CreateOwnerDto } from './dto/create-owner.dto';
 import { Owner } from './schemas/owner.schema';
 
 @Controller('owner')
-@ApiBearerAuth()
 @ApiTags('owner')
 export class OwnersController {
   constructor(private readonly ownersService: OwnersService) {}

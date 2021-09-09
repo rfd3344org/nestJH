@@ -1,43 +1,56 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Param, Query } from '@nestjs/common';
 import {
-  ApiBearerAuth,
   ApiOperation,
-  ApiResponse,
   ApiTags,
-  ApiBody,
   ApiQuery,
+  ApiBasicAuth,
+  ApiHeader,
+  ApiParam,
 } from '@nestjs/swagger';
 import { CatsService } from './cats.service';
-import { CreateCatDto } from './dto/create-cat.dto';
-import { Cat } from './schemas/cat.schema';
+import { CreateCatDto } from './cat.dto';
 
-console.log('3333 process', process.env.MONGO_DB_NAME);
+
 @Controller('cats')
-@ApiBearerAuth()
 @ApiTags('cats')
+@ApiBasicAuth()
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Post()
-  @ApiOperation({ summary: 'called ApiOperation' })
-  @ApiQuery({ name: 'stringDemo',  })
+  @ApiOperation({ summary: `called ApiOperation` })
+  @ApiHeader({ name: 'token' })
+  @ApiQuery({ name: `ApiQuery`, example: `example` })
   @ApiQuery({ name: 'EnumDemo', enum: ['Admin', 'Moderator', 'User'] })
-  // @ApiBody({ type: [CreateCatDto] })
-  @ApiResponse({ status: 403, description: 'Forbidden.' })
-  async create(@Body() createCatDto: CreateCatDto) {
-    const res = await this.catsService.create(createCatDto);
-    return res
+  create(@Body() createCatDto: CreateCatDto) {
+    return this.catsService.create(createCatDto);
   }
 
   @Get()
-  @ApiResponse({
-    status: 200,
-    description: 'The found record',
-    type: Cat,
-  })
-  async findAll(): Promise<Cat[]> {
-
-    console.warn('222process.env', process.env)
-    return this.catsService.findAll();
+  getAll() {
+    return this.catsService.find();
   }
+
+  @Get('search')
+  @ApiQuery({ name: 'name', example: 'cat', required: false })
+  search(@Query('name') name: string) {
+    const searchFields : any = {};
+    if(name) searchFields.name = new RegExp(name, 'i');
+
+    return this.catsService.find(searchFields);
+  }
+
+  @Get(':id')
+  @ApiParam({ name: 'id', example: '61349adbfeb0af352aa23199' })
+  findById(@Param('id') id: string) {
+    return this.catsService.findById(id);
+  }
+
+
+  @Delete(':id')
+  @ApiParam({ name: 'id' })
+  deleteOne(@Param('id') id: string) {
+    return this.catsService.deleteOne(id);
+  }
+
 }
