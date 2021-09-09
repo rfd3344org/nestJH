@@ -46,7 +46,6 @@ export class CatsController {
     return this.catsService.findById(id);
   }
 
-
   @Delete(':id')
   @ApiParam({ name: 'id' })
   deleteOne(@Param('id') id: string) {
