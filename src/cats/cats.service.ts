@@ -23,7 +23,7 @@ export class CatsService {
   async findById(id: string): Promise<Cat> {
     return this.catModel.findById(id).exec();
   }
-s
+
   async deleteOne(id: string): Promise<Cat> {
     return this.catModel.findOneAndDelete({_id: id}).exec();
   }
