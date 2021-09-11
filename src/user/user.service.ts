@@ -24,14 +24,14 @@ export default class UserService {
     return createdUserModel.save();
   }
 
-  async findOne(username: string): Promise<User | undefined> {
-    // return this.users.find(user => user.username === username);
-    return;
+  async findByUsername(username: string): Promise<any> {
+    return this.userModel.findOne({ username }).lean();
+
   }
 
 
-  async find(arg = null): Promise<any[]> {
-    return this.userModel.find(arg).exec();
+  async find(arg = null): Promise<User[]> {
+    return this.userModel.find(arg).lean();
   }
 
 }

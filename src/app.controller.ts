@@ -22,13 +22,6 @@ export class AppController {
   @Get()
   async testRoute(): Promise<any> {
 
-    const password = 'random_password';
-    const passwordHash =  hashSync(password, 10);
-
-
-    const isMatch =  compareSync('random_password', passwordHash);
-
-    console.warn('password',  passwordHash, isMatch)
     return `<a href="${process.env.SWAGGER_URL}">Go to Swagger Docs</a>`;
   }
 
@@ -36,7 +29,6 @@ export class AppController {
   @ApiBody({ type: User })
   @Post('auth/login')
   async login(@Request() req) {
-    console.warn('login', req.user)
     return this.authService.login(req.user);
   }
 

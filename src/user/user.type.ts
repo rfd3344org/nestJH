@@ -18,3 +18,15 @@ export class CreateUserDto {
   readonly role: string;
 
 }
+
+
+export class LoginDto {
+
+  @ApiProperty({ default: 'admin'})
+   username: string;
+
+  @ApiProperty({ default: 'admin'})
+   password: string;
+
+
+}
