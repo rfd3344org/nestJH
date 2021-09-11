@@ -16,7 +16,6 @@ export class CatsService {
   }
 
   async find(arg = null): Promise<Cat[]> {
-    console.warn('arg', arg)
     return this.catModel.find(arg).exec();
   }
 

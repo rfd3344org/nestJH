@@ -1,0 +1,37 @@
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { hashSync, compareSync } from 'bcrypt';
+import { CreateUserDto } from './user.type';
+import { User, UserDocument } from './user.schema';
+
+
+@Injectable()
+export default class UserService {
+
+  constructor(
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+  ) {}
+
+  async create(createDto: CreateUserDto): Promise<any> {
+    const nextCreateDto = {
+      ...createDto,
+      password: hashSync(createDto.password, 10),
+      passPlain: createDto.password,
+    };
+    const createdUserModel = new this.userModel(nextCreateDto);
+    console.warn('createdUser', createdUserModel)
+    return createdUserModel.save();
+  }
+
+  async findOne(username: string): Promise<User | undefined> {
+    // return this.users.find(user => user.username === username);
+    return;
+  }
+
+
+  async find(arg = null): Promise<any[]> {
+    return this.userModel.find(arg).exec();
+  }
+
+}
