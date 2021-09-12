@@ -1,19 +1,11 @@
-import { Body, Controller, Request, Get, Post, Delete, Param, Query, UseGuards } from '@nestjs/common';
-
-import {
-  ApiOperation,
-  ApiTags,
-  ApiQuery,
-  ApiBasicAuth,
-  ApiHeader,
-  ApiParam,
-  ApiBody,
-} from '@nestjs/swagger';
+import { Body, Controller, Request, Get, Post, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import UserService from '@/user/user.service';
 import { AuthService } from './auth.service';
-import { CreateUserDto, LoginDto } from '@/user/user.type';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { User } from '@/user/user.schema';
+import { CreateUserDto, LoginDto } from '@/user/user.type';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -28,17 +20,19 @@ export default class AuthController {
     return this.userService.create(createDto);
   }
 
-  @Get('profile')
-  profile() {
-    return this.userService.find();
-  }
-
-
 
   @Post('login')
   @UseGuards(LocalAuthGuard)
   async login(@Body() loginDto : LoginDto) {
     return this.authService.login(loginDto);
+  }
+
+  @Get('profile')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  getProfile(@Request() req) {
+    console.warn('getProfile', req.user)
+    return req.user;
   }
 
   // updateUser
