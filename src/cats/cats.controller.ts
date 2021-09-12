@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Delete, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Param, Query, ParseIntPipe, ParseBoolPipe } from '@nestjs/common';
 import {
   ApiOperation,
   ApiTags,
@@ -13,7 +13,6 @@ import { CreateCatDto } from './cat.dto';
 
 @Controller('cats')
 @ApiTags('cats')
-@ApiBasicAuth()
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
@@ -33,9 +32,13 @@ export class CatsController {
 
   @Get('search')
   @ApiQuery({ name: 'name', example: 'cat', required: false })
-  search(@Query('name') name: string) {
+  search(
+    @Query('name') name: string,
+    @Query('age') age: number,
+  ) {
     const searchFields : any = {};
     if(name) searchFields.name = new RegExp(name, 'i');
+    if(age) searchFields.age = age;
 
     return this.catsService.find(searchFields);
   }

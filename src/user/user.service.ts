@@ -21,7 +21,7 @@ export default class UserService {
     };
     const createdUserModel = new this.userModel(nextCreateDto);
     console.warn('createdUser', createdUserModel)
-    return createdUserModel.save();
+    // return createdUserModel.save();
   }
 
   async findByUsername(username: string): Promise<any> {

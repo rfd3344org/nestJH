@@ -1,5 +1,5 @@
-import { Body, Controller, Request, Get, Post, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Request, Get, Post, UseGuards, Patch } from '@nestjs/common';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import UserService from '@/user/user.service';
 import { AuthService } from './auth.service';
@@ -20,22 +20,22 @@ export default class AuthController {
     return this.userService.create(createDto);
   }
 
-
   @Post('login')
   @UseGuards(LocalAuthGuard)
-  async login(@Body() loginDto : LoginDto) {
-    return this.authService.login(loginDto);
+  @ApiBody({ type: LoginDto })
+  async login(@Request() req) {
+    return this.authService.login(req.user);
   }
 
   @Get('profile')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   getProfile(@Request() req) {
-    console.warn('getProfile', req.user)
     return req.user;
   }
 
   // updateUser
+
 
   // delete user
 
