@@ -13,7 +13,7 @@ async function bootstrap() {
     // .addTag('called addTag')
     // .addBasicAuth()
     .addBearerAuth()
-    .addOAuth2()
+    // .addOAuth2()
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

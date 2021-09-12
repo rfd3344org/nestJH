@@ -1,18 +1,10 @@
-import { Controller, Get, Post, Request, Redirect, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiProperty } from '@nestjs/swagger';
+import { Controller, Get, Post, Request, Redirect, UseGuards, Header } from '@nestjs/common';
+import { ApiBasicAuth, ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 
-import { hashSync, compareSync } from 'bcrypt';
-
-class User {
-  @ApiProperty()
-  username: string;
-  @ApiProperty()
-  password: string;
-}
-
+@ApiBearerAuth()
 @Controller()
 export class AppController {
   constructor(
@@ -26,7 +18,6 @@ export class AppController {
   }
 
   @UseGuards(LocalAuthGuard)
-  @ApiBody({ type: User })
   @Post('auth/login')
   async login(@Request() req) {
     return this.authService.login(req.user);
@@ -35,6 +26,7 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
+    console.warn('getProfile', req.user)
     return req.user;
   }
 

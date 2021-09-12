@@ -18,12 +18,11 @@ export class AuthService {
     if (!user || compareSync(user.password, password)) return null;
 
     return _.omit(user, ['password']);
-
   }
 
   async login(user: any) {
     return {
-      token: this.jwtService.sign({ id: user.id }),
+      token: this.jwtService.sign(user),
     };
   }
 }
