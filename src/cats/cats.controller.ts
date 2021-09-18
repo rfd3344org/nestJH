@@ -1,17 +1,20 @@
-import { Body, Controller, Get, Post, Delete, Param, Query, ParseIntPipe, ParseBoolPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Param, Query, UseGuards } from '@nestjs/common';
 import {
   ApiOperation,
   ApiTags,
   ApiQuery,
-  ApiBasicAuth,
   ApiHeader,
   ApiParam,
 } from '@nestjs/swagger';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './cat.dto';
+import { RolesGuard } from '@/auth/auth.guard';
+import { Roles } from '@/auth/roles/roles.decorator';
 
 
 @Controller('cats')
+@UseGuards(RolesGuard)
+
 @ApiTags('cats')
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
@@ -26,6 +29,7 @@ export class CatsController {
   }
 
   @Get()
+  @Roles('admin')
   getAll() {
     return this.catsService.find();
   }
