@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
-import { Owner } from '../owners/schemas/owner.schema';
 
 export type CatDocument = Cat & Document;
 
@@ -15,9 +14,6 @@ export class Cat {
 
   @Prop()
   breed: string;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Owner' })
-  owner: Owner;
 
 }
 
