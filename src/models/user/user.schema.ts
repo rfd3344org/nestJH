@@ -22,7 +22,7 @@ export class User {
    fullname: string;
 
   @Prop()
-  readonly role: string;
+  readonly role: string[];
 
 }
 

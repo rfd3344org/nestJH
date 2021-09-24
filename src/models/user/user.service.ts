@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { hashSync, compareSync } from 'bcrypt';
-import { CreateUserDto } from './user.type';
+import { CreateUserDto } from './user.dto';
 import { User, UserDocument } from './user.schema';
 
 

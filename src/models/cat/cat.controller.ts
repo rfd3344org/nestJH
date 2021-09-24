@@ -6,7 +6,7 @@ import {
   ApiHeader,
   ApiParam,
 } from '@nestjs/swagger';
-import { CatsService } from './cats.service';
+import { CatsService } from './cat.service';
 import { CreateCatDto } from './cat.dto';
 import { RolesGuard } from '@/auth/auth.guard';
 import { Roles } from '@/auth/roles/roles.decorator';
