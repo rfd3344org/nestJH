@@ -1,10 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
+import { sortBy } from 'lodash';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const { SWAGGER_URL, SERVER_PORT } = process.env;
+  app.useGlobalInterceptors(new LoggingInterceptor());
 
   const options = new DocumentBuilder()
     .setTitle('called setTitle')
@@ -15,7 +18,6 @@ async function bootstrap() {
     .addBearerAuth()
     // .addOAuth2()
     .build();
-
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup(SWAGGER_URL, app, document);
 

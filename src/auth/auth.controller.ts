@@ -1,11 +1,11 @@
 import { Body, Controller, Request, Get, Post, UseGuards, Patch } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import UserService from '@/models/user/user.service';
+import UserService from '@/model/user/user.service';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { LocalAuthGuard } from './guards/local-auth.guard';
-import { CreateUserDto, LoginDto } from '@/models/user/user.dto';
+import { JwtAuthGuard } from './guard/jwt-auth.guard';
+import { LocalAuthGuard } from './guard/local-auth.guard';
+import { LoginDto } from './auth.dto';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -15,10 +15,10 @@ export default class AuthController {
     private readonly authService: AuthService,
   ) {}
 
-  @Post('/sign-up')
-  create(@Body() createDto: CreateUserDto) {
-    return this.userService.create(createDto);
-  }
+  // @Post('sign-up')
+  // create(@Body() createDto: SignUpDto) {
+  //   return this.userService.create(createDto);
+  // }
 
   @Post('login')
   @UseGuards(LocalAuthGuard)
@@ -34,15 +34,18 @@ export default class AuthController {
     return req.user;
   }
 
-  // updateUser
-
-
-  // delete user
-
-
-  @Get('all-users')
-  getAll() {
-    return this.userService.find();
+  @Post('change-password')
+  @ApiBearerAuth()
+  changePassword() {
+    return `changePassword`;
   }
+
+  @Post('forget-password')
+  forgetPassword() {
+    return `forgetPassword`;
+  }
+
+
+
 
 }

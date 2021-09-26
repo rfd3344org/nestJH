@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 
 import { AuthModule } from './auth/auth.module';
-import UserModule from './models/user/user.module';
-import { CatsModule } from './models/cat/cat.module';
+import UserModule from './model/user/user.module';
+import { CatsModule } from './model/cat/cat.module';
 import { AppController } from './app.controller';
 
 const formatMongoURL = () => {
@@ -14,6 +14,7 @@ const formatMongoURL = () => {
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    CacheModule.register(),
     MongooseModule.forRoot(formatMongoURL()),
     AuthModule,
     UserModule,

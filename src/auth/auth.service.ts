@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import UserService from '@/models/user/user.service';
+import UserService from '@/model/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { hashSync, compareSync } from 'bcrypt';
 import * as _ from 'lodash';
-import { LoginDto } from '@/models/user/user.dto';
+import { LoginDto } from '@/auth/auth.dto';
 
 
 

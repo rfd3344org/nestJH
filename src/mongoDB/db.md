@@ -20,3 +20,8 @@ src /
 │           └── provider.module.ts
 └── seed.ts
 ```
+
+
+## mongoose
+
+https://mongoosejs.com/docs/api/model.html

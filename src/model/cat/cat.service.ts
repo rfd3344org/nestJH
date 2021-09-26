@@ -7,24 +7,24 @@ import { Cat, CatDocument } from './cat.schema';
 @Injectable()
 export class CatsService {
   constructor(
-    @InjectModel(Cat.name) private readonly catModel: Model<CatDocument>,
+    @InjectModel(Cat.name) private readonly model: Model<CatDocument>,
   ) {}
 
   async create(createCatDto: CreateCatDto): Promise<Cat> {
-    const createdCat = new this.catModel(createCatDto);
+    const createdCat = new this.model(createCatDto);
     return createdCat.save();
   }
 
   async find(arg = null): Promise<Cat[]> {
-    return this.catModel.find(arg).exec();
+    return this.model.find(arg).exec();
   }
 
   async findById(id: string): Promise<Cat> {
-    return this.catModel.findById(id).exec();
+    return this.model.findById(id).exec();
   }
 
   async deleteOne(id: string): Promise<Cat> {
-    return this.catModel.findOneAndDelete({_id: id}).exec();
+    return this.model.findOneAndDelete({_id: id}).exec();
   }
 
 }

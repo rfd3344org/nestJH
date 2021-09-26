@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Delete, Param, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Param, Query } from '@nestjs/common';
 import {
   ApiOperation,
   ApiTags,
@@ -8,16 +8,24 @@ import {
 } from '@nestjs/swagger';
 import { CatsService } from './cat.service';
 import { CreateCatDto } from './cat.dto';
-import { RolesGuard } from '@/auth/auth.guard';
-import { Roles } from '@/auth/roles/roles.decorator';
 
-
-@Controller('cats')
-@UseGuards(RolesGuard)
-
-@ApiTags('cats')
+@Controller('cat')
+@ApiTags('cat')
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
+
+  @Get()
+  getAll() {
+    return this.catsService.find();
+  }
+
+  @Get(':id')
+  @ApiParam({ name: 'id', example: '61349adbfeb0af352aa23199' })
+  getById(@Param('id') id: string) {
+    return this.catsService.findById(id);
+  }
+
+
 
   @Post()
   @ApiOperation({ summary: `called ApiOperation` })
@@ -28,10 +36,10 @@ export class CatsController {
     return this.catsService.create(createCatDto);
   }
 
-  @Get()
-  @Roles('admin')
-  getAll() {
-    return this.catsService.find();
+  @Delete(':id')
+  @ApiParam({ name: 'id' })
+  deleteOne(@Param('id') id: string) {
+    return this.catsService.deleteOne(id);
   }
 
   @Get('search')
@@ -45,18 +53,6 @@ export class CatsController {
     if(age) searchFields.age = age;
 
     return this.catsService.find(searchFields);
-  }
-
-  @Get(':id')
-  @ApiParam({ name: 'id', example: '61349adbfeb0af352aa23199' })
-  findById(@Param('id') id: string) {
-    return this.catsService.findById(id);
-  }
-
-  @Delete(':id')
-  @ApiParam({ name: 'id' })
-  deleteOne(@Param('id') id: string) {
-    return this.catsService.deleteOne(id);
   }
 
 }

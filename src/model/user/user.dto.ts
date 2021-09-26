@@ -1,4 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Role } from '@/constant/enum';
+
 
 export class CreateUserDto {
   @ApiProperty({ default: 'email'})
@@ -13,17 +15,18 @@ export class CreateUserDto {
   @ApiProperty({ default: 'fullname'})
   readonly fullname: string;
 
-  @ApiProperty({ default: 'admin', enum: ['admin', 'support', 'user'] })
-  readonly role: string;
-
+  @ApiProperty({ default: [Role.Viewer], enum: Role })
+  readonly roles: string[];
 }
 
+export class UpdateUserDto {
+  @ApiProperty({ default: 'email'})
+  email: string;
 
-export class LoginDto {
-  @ApiProperty({ default: 'admin'})
-  username: string;
+  @ApiProperty({ default: 'fullname'})
+  fullname: string;
 
-  @ApiProperty({ default: 'admin'})
-  password: string;
+  @ApiProperty({ default: [Role.Viewer], enum: Role })
+  roles: string[];
 
 }
