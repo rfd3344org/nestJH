@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
-import { Express } from 'express';
+import { Body, CACHE_MANAGER, Controller, Get, Inject, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+
+import { MailService } from '@/mail/mail.service';
 
 export class SampleDto {
   file: string;
@@ -11,7 +10,7 @@ export class SampleDto {
 @Controller()
 export class AppController {
   constructor(
-
+    private mailService: MailService
   ) {}
 
   @Get()
@@ -23,33 +22,16 @@ export class AppController {
 
 
   @Get('test')
-  async testRoute(): Promise<any> {
-    await new Promise(resolve  => setTimeout(resolve , 1000));
+  async test(): Promise<any> {
+    await this.mailService.sendUserConfirmation();
     return `test`;
   }
 
+  @Get('test2')
+  async setTest(): Promise<any> {
 
-  @UseInterceptors(FileInterceptor('file'))
-  @Post('file')
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  uploadFile(
-    @Body() body: SampleDto,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    return {
-      ...file,
-      buffer: file.buffer.toString(),
-    };
+    return `test2`;
   }
+
+
 }
