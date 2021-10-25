@@ -10,6 +10,7 @@ import { CatsModule } from './model/cat/cat.module';
 import { AppController } from './app.controller';
 import { MailModule } from './mail/mail.module';
 import { getMongoDBUri } from './utils/mongoDB.utils';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
@@ -17,6 +18,9 @@ import { getMongoDBUri } from './utils/mongoDB.utils';
     CacheModule.register(),
     MongooseModule.forRoot(getMongoDBUri()),
     ScheduleModule.forRoot(),
+    ClientsModule.register([
+      { name: 'MATH_SERVICE', transport: Transport.TCP },
+    ]),
     MailModule,
     TasksModule,
     AuthModule,
