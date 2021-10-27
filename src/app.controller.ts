@@ -29,7 +29,7 @@ export class AppController {
     console.warn('a', a.subscribe)
     const b = await a.forEach(next => {
       console.warn('next', next)
-    }) ;
+    });
     // await this.mailService.sendUserConfirmation();
     // console.warn('b', b)
     return `test ${a}`;
