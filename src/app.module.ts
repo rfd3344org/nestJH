@@ -11,7 +11,7 @@ import { AppController } from './app.controller';
 import { MailModule } from './mail/mail.module';
 import { getMongoDBUri } from './utils/mongoDB.utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { EntitiesModule } from './entities/entities.module';
+import { EntitiesModule } from './sqlite/sqlite.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
