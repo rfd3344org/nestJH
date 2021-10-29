@@ -31,6 +31,7 @@
     "@nestjs/platform-express": "^8.0.7",
     "@nestjs/schedule": "^1.0.1",
     "@nestjs/swagger": "^5.0.9",
+    "@nestjs/typeorm": "^8.0.2",
     "bcrypt": "^5.0.1",
     "cache-manager": "^3.4.4",
     "handlebars": "^4.7.7",
@@ -44,7 +45,9 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.3.0",
-    "swagger-ui-express": "^4.1.6"
+    "sqlite3": "^5.0.2",
+    "swagger-ui-express": "^4.1.6",
+    "typeorm": "^0.2.38"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.1.1",

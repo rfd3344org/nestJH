@@ -11,6 +11,8 @@ import { AppController } from './app.controller';
 import { MailModule } from './mail/mail.module';
 import { getMongoDBUri } from './utils/mongoDB.utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { EntitiesModule } from './entities/entities.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -18,6 +20,12 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     CacheModule.register(),
     MongooseModule.forRoot(getMongoDBUri()),
     ScheduleModule.forRoot(),
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: 'db.sqlite',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
     ClientsModule.register([
       {
         name: 'MATH_SERVICE',
@@ -34,6 +42,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     AuthModule,
     UserModule,
     CatsModule,
+    EntitiesModule,
   ],
   controllers: [AppController],
 })
