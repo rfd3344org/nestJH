@@ -25,8 +25,6 @@ export class CatsController {
     return this.catsService.findById(id);
   }
 
-
-
   @Post()
   @ApiOperation({ summary: `called ApiOperation` })
   @ApiHeader({ name: 'token' })

@@ -11,21 +11,31 @@ import { AppController } from './app.controller';
 import { MailModule } from './mail/mail.module';
 import { getMongoDBUri } from './utils/mongoDB.utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { EntitiesModule } from './sqlite/sqlite.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { SQLiteModule } from './sqlite/sqlite.module';
+
+import { AppConfigService } from './config/config.service';
+import { ConfigService } from '@nestjs/config';
+import { AppConfigModule } from './config/config.module';
 
 @Module({
   imports: [
+    AppConfigModule,
     ConfigModule.forRoot(),
     CacheModule.register(),
-    MongooseModule.forRoot(getMongoDBUri()),
-    ScheduleModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'db.sqlite',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      // useFactory: async (configService: ConfigService) => {
+      //   console.warn('rfd useFactory',  configService.get('MONGO_DB_NAME'))
+      //   // return {uri: configService.env }
+      // },
+      useFactory: async (configService: ConfigService) => ({
+        uri: getMongoDBUri(),
+      }),
+      inject: [ConfigService],
     }),
+    // MongooseModule.forRoot(getMongoDBUri()),
+    SQLiteModule,
+    ScheduleModule.forRoot(),
     ClientsModule.register([
       {
         name: 'MATH_SERVICE',
@@ -42,7 +52,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     AuthModule,
     UserModule,
     CatsModule,
-    EntitiesModule,
   ],
   controllers: [AppController],
 })

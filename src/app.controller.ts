@@ -1,6 +1,7 @@
 import { Body, CACHE_MANAGER, Controller, Get, Inject, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { MailService } from '@/mail/mail.service';
+import { AppConfigService } from './config/config.service';
 
 export class SampleDto {
   file: string;
@@ -11,7 +12,9 @@ export class SampleDto {
 export class AppController {
   constructor(
     private mailService: MailService,
+    private configService : AppConfigService,
     @Inject('MATH_SERVICE') private client: ClientProxy,
+
   ) {}
 
   @Get()
@@ -37,7 +40,8 @@ export class AppController {
 
   @Get('test2')
   async setTest(): Promise<any> {
-
+   const a =  this.configService.env
+   console.warn('test2', a)
     return `test2`;
   }
 

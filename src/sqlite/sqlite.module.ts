@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
-import { EntitiesService } from './entities/entities.service';
-import { EntitiesController } from './entities/entities.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GenericEntity } from './entities/entity.entity'
+import { EntitiesModule } from './entities/entity.module';
+
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([GenericEntity]),
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: 'db.sqlite',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
+    EntitiesModule,
   ],
-  providers: [EntitiesService],
-  controllers: [EntitiesController]
 })
-export class EntitiesModule {}
+export class SQLiteModule {}

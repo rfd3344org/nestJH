@@ -8,7 +8,7 @@ import { GenericEntity } from './entity.entity'
 export class EntitiesService {
   constructor(
     @InjectRepository(GenericEntity)
-    private entityRepository: Repository<GenericEntity>
+      private entityRepository: Repository<GenericEntity>
   ) { }
 
   async findAll(): Promise<GenericEntity[]> {
