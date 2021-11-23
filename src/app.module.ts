@@ -14,24 +14,29 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { SQLiteModule } from './sqlite/sqlite.module';
 
 import { AppConfigService } from './config/config.service';
-import { ConfigService } from '@nestjs/config';
+// import { ConfigService } from '@nestjs/config';
 import { AppConfigModule } from './config/config.module';
+import { FileModule } from './model/file/file.module';
 
 @Module({
   imports: [
     AppConfigModule,
-    ConfigModule.forRoot(),
+    // ConfigModule,
+    // ConfigModule.forRoot(),
     CacheModule.register(),
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [AppConfigModule],
       // useFactory: async (configService: ConfigService) => {
       //   console.warn('rfd useFactory',  configService.get('MONGO_DB_NAME'))
       //   // return {uri: configService.env }
       // },
-      useFactory: async (configService: ConfigService) => ({
-        uri: getMongoDBUri(),
-      }),
-      inject: [ConfigService],
+      useFactory: async (config: AppConfigService) => {
+        console.warn( config.mongoDBUri)
+          return ({
+          uri: config.mongoDBUri,
+        })
+      },
+      inject: [AppConfigService],
     }),
     // MongooseModule.forRoot(getMongoDBUri()),
     SQLiteModule,
@@ -52,6 +57,7 @@ import { AppConfigModule } from './config/config.module';
     AuthModule,
     UserModule,
     CatsModule,
+    FileModule,
   ],
   controllers: [AppController],
 })

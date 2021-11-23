@@ -1,8 +1,8 @@
 
 import { Module } from '@nestjs/common';
-import configuration from './config';
+// import configuration from './config';
 import { AppConfigService } from './config.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+// import { ConfigModule, ConfigService } from '@nestjs/config';
 /**
  * Import and provide app configuration related classes.
  *
@@ -10,19 +10,23 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
  */
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      load: [configuration],
-      // validationSchema: Joi.object({
-      //   APP_NAME: Joi.string().default('MyApp'),
-      //   APP_ENV: Joi.string()
-      //     .valid('development', 'production', 'test', 'provision')
-      //     .default('development'),
-      //   APP_URL: Joi.string().default('http://my-app.test'),
-      //   APP_PORT: Joi.number().default(9000),
-      // }),
-    }),
+
+    // ConfigModule.forRoot({
+    //   load: [configuration],
+    //   // validationSchema: Joi.object({
+    //   //   APP_NAME: Joi.string().default('MyApp'),
+    //   //   APP_ENV: Joi.string()
+    //   //     .valid('development', 'production', 'test', 'provision')
+    //   //     .default('development'),
+    //   //   APP_URL: Joi.string().default('http://my-app.test'),
+    //   //   APP_PORT: Joi.number().default(9000),
+    //   // }),
+    // }),
   ],
-  providers: [ConfigService, AppConfigService],
-  exports: [ConfigService, AppConfigService],
+  // providers: [ConfigService, AppConfigService],
+  // exports: [ConfigService, AppConfigService],
+  providers: [AppConfigService],
+  exports: [AppConfigService],
+
 })
 export class AppConfigModule {}

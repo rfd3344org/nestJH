@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+// import { ConfigService } from '@nestjs/config';
+import * as dotenv from 'dotenv';
+import * as fs from 'fs';
+
+
+
 /**
  * Service dealing with app config based operations.
  *
@@ -7,24 +12,30 @@ import { ConfigService } from '@nestjs/config';
  */
 @Injectable()
 export class AppConfigService {
-  constructor(private configService: ConfigService) {}
+  private readonly envConfig: { [key: string]: string };
 
-  get name(): string {
-    return this.configService.get<string>('app.name');
+  constructor() {
+    const { NODE_ENV } = process.env;
+    if (['production', 'staging'].includes(NODE_ENV)) {
+      // this.envConfig = {
+      //   MONGODB_URI: process.env.MONGODB_URI,
+      // };
+
+
+
+
+    } else {
+      this.envConfig = dotenv.parse(fs.readFileSync('.env'));
+    }
+
   }
-  get env(): string {
-    return this.configService.get<string>('app.env');
-  }
-  get url(): string {
-    return this.configService.get<string>('app.url');
-  }
-  get port(): number {
-   return Number(this.configService.get<number>('app.port'));
+
+  get(key: string): string {
+    return this.envConfig[key];
   }
 
   get mongoDBUri(): string {
     const { MONGO_DB_NAME, MONGO_USER, MONGO_PASSWORD } = process.env;
     return `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0.giwpq.mongodb.net/${MONGO_DB_NAME}?retryWrites=true&w=majority`;
-
   }
 }

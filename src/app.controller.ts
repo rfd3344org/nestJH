@@ -40,8 +40,8 @@ export class AppController {
 
   @Get('test2')
   async setTest(): Promise<any> {
-   const a =  this.configService.env
-   console.warn('test2', a)
+  //  const a =  this.configService.env
+  //  console.warn('test2', a)
     return `test2`;
   }
 

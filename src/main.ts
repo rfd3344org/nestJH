@@ -2,11 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
-import { sortBy } from 'lodash';
+import { RequestMethod } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const { SWAGGER_URL, SERVER_PORT } = process.env;
+  const { PREFIX, SERVER_PORT, SWAGGER_URL } = process.env;
+  app.setGlobalPrefix(PREFIX, {
+    exclude: [{ path: '', method: RequestMethod.GET }],
+  });
   app.useGlobalInterceptors(new LoggingInterceptor());
 
   const options = new DocumentBuilder()
