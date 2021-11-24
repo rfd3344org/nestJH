@@ -33,9 +33,12 @@ export class AppConfigService {
   get(key: string): string {
     return this.envConfig[key];
   }
-
   get mongoDBUri(): string {
-    const { MONGO_DB_NAME, MONGO_USER, MONGO_PASSWORD } = process.env;
-    return `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0.giwpq.mongodb.net/${MONGO_DB_NAME}?retryWrites=true&w=majority`;
+    return  this.envConfig.MONGO_URL;
+    // const { MONGO_DB_NAME, MONGO_USER, MONGO_PASSWORD } = this.envConfig;
+    // return `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0.giwpq.mongodb.net/${MONGO_DB_NAME}?retryWrites=true&w=majority`;
   }
+
+
+
 }

@@ -21,21 +21,17 @@ import { FileModule } from './model/file/file.module';
 @Module({
   imports: [
     AppConfigModule,
-    // ConfigModule,
-    // ConfigModule.forRoot(),
     CacheModule.register(),
     MongooseModule.forRootAsync({
       imports: [AppConfigModule],
-      // useFactory: async (configService: ConfigService) => {
-      //   console.warn('rfd useFactory',  configService.get('MONGO_DB_NAME'))
-      //   // return {uri: configService.env }
+      // useFactory: async (configService: AppConfigService) => {
+      //   console.warn('rfd useFactory',  configService.mongoDBUri)
+      //   return {uri: configService.mongoDBUri }
       // },
-      useFactory: async (config: AppConfigService) => {
-        console.warn( config.mongoDBUri)
-          return ({
-          uri: config.mongoDBUri,
-        })
-      },
+
+      useFactory: async (configService: AppConfigService) => ({
+        uri: configService.mongoDBUri,
+      }),
       inject: [AppConfigService],
     }),
     // MongooseModule.forRoot(getMongoDBUri()),

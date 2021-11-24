@@ -20,7 +20,7 @@ export class AppController {
   @Get()
   async root(): Promise<any> {
     return `
-      <a href="${process.env.SWAGGER_URL}">Go to Swagger Docs</a>
+      <a href="${this.configService.get('SWAGGER_URL')}">Go to Swagger Docs</a>
     `;
   }
 
@@ -40,9 +40,9 @@ export class AppController {
 
   @Get('test2')
   async setTest(): Promise<any> {
-  //  const a =  this.configService.env
-  //  console.warn('test2', a)
-    return `test2`;
+    const a = this.configService.get('PREFIX')
+    console.warn(a)
+    return a;
   }
 
 
