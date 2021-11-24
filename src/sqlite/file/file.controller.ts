@@ -32,7 +32,6 @@ export class FileController {
   })
   @UseInterceptors(FileInterceptor('file'))
   create(
-    @Body() body: CreateFileDto,
     @UploadedFile() file: Express.Multer.File
   ) {
     console.warn(file)

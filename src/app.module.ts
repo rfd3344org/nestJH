@@ -16,7 +16,7 @@ import { SQLiteModule } from './sqlite/sqlite.module';
 import { AppConfigService } from './config/config.service';
 // import { ConfigService } from '@nestjs/config';
 import { AppConfigModule } from './config/config.module';
-import { FileModule } from './model/file/file.module';
+import { FileModule } from './sqlite/file/file.module';
 
 @Module({
   imports: [
