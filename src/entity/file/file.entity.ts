@@ -1,10 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class GenericEntity {
+export class FileEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
-    genericField: string;
+    filename: string;
 }

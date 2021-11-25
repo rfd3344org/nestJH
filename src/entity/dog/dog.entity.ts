@@ -1,10 +1,16 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class GenericEntity {
+export class DogEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
-    genericField: string;
+    name: string;
+
+    @Column()
+    color: string;
+
+    @Column()
+    age: number;
 }

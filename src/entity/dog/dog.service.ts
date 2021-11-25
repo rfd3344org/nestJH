@@ -1,25 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm';
-import { UpdateResult, DeleteResult } from 'typeorm';;
-import { GenericEntity } from './entity.entity'
+import { UpdateResult, DeleteResult } from 'typeorm';
+import { DogEntity } from './dog.entity';
+import { CreateDogDto } from './dog.dto';
 
 @Injectable()
-export class EntitiesService {
+export class DogService {
   constructor(
-    @InjectRepository(GenericEntity)
-      private entityRepository: Repository<GenericEntity>
+    @InjectRepository(DogEntity)
+    private entityRepository: Repository<DogEntity>
   ) { }
 
-  async findAll(): Promise<GenericEntity[]> {
+  async findAll(): Promise<DogEntity[]> {
     return await this.entityRepository.find();
   }
 
-  async create(entity: GenericEntity): Promise<GenericEntity> {
+  async create(entity: CreateDogDto): Promise<DogEntity> {
     return await this.entityRepository.save(entity);
   }
 
-  async update(entity: GenericEntity): Promise<UpdateResult> {
+  async update(entity: DogEntity): Promise<UpdateResult> {
     return await this.entityRepository.update(entity.id, entity)
   }
 

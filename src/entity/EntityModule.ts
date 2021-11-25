@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EntitiesModule } from './entities/entity.module';
-
+import { DogModule } from './dog/dog.module';
 
 @Module({
   imports: [
@@ -11,7 +10,7 @@ import { EntitiesModule } from './entities/entity.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    EntitiesModule,
+    DogModule,
   ],
 })
-export class SQLiteModule {}
+export class EntityModule {}

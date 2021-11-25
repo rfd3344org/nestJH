@@ -11,12 +11,12 @@ import { AppController } from './app.controller';
 import { MailModule } from './mail/mail.module';
 import { getMongoDBUri } from './utils/mongoDB.utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { SQLiteModule } from './sqlite/sqlite.module';
+import { EntityModule } from './entity/EntityModule';
 
 import { AppConfigService } from './config/config.service';
 // import { ConfigService } from '@nestjs/config';
 import { AppConfigModule } from './config/config.module';
-import { FileModule } from './sqlite/file/file.module';
+import { FileModule } from './entity/file/file.module';
 
 @Module({
   imports: [
@@ -35,7 +35,7 @@ import { FileModule } from './sqlite/file/file.module';
       inject: [AppConfigService],
     }),
     // MongooseModule.forRoot(getMongoDBUri()),
-    SQLiteModule,
+    EntityModule,
     ScheduleModule.forRoot(),
     ClientsModule.register([
       {
