@@ -6,5 +6,13 @@ export class FileEntity {
     id: number;
 
     @Column()
+    created_utc: number;
+
+
+    @Column()
     filename: string;
+
+    @Column()
+    url: string;
+
 }

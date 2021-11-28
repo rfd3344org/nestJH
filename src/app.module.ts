@@ -1,42 +1,28 @@
 import { CacheModule, Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
+import { AppConfigModule } from './config/config.module';
 import { TasksModule } from './job/tasks/tasks.module';
 import { AuthModule } from './auth/auth.module';
-import UserModule from './model/user/user.module';
-import { CatsModule } from './model/cat/cat.module';
-import { AppController } from './app.controller';
 import { MailModule } from './mail/mail.module';
-import { getMongoDBUri } from './utils/mongoDB.utils';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { EntityModule } from './entity/EntityModule';
+import { MongoModule } from './mongo/MongoModule';
 
-import { AppConfigService } from './config/config.service';
-// import { ConfigService } from '@nestjs/config';
-import { AppConfigModule } from './config/config.module';
-import { FileModule } from './entity/file/file.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
     AppConfigModule,
     CacheModule.register(),
-    MongooseModule.forRootAsync({
-      imports: [AppConfigModule],
-      // useFactory: async (configService: AppConfigService) => {
-      //   console.warn('rfd useFactory',  configService.mongoDBUri)
-      //   return {uri: configService.mongoDBUri }
-      // },
-
-      useFactory: async (configService: AppConfigService) => ({
-        uri: configService.mongoDBUri,
-      }),
-      inject: [AppConfigService],
-    }),
-    // MongooseModule.forRoot(getMongoDBUri()),
-    EntityModule,
     ScheduleModule.forRoot(),
+    MailModule,
+    TasksModule,
+    AuthModule,
+    EntityModule,
+    MongoModule,
+
+    // todo: use configService create service folder
     ClientsModule.register([
       {
         name: 'MATH_SERVICE',
@@ -48,12 +34,6 @@ import { FileModule } from './entity/file/file.module';
         },
       },
     ]),
-    MailModule,
-    TasksModule,
-    AuthModule,
-    UserModule,
-    CatsModule,
-    FileModule,
   ],
   controllers: [AppController],
 })

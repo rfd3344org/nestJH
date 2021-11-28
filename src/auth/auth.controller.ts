@@ -1,7 +1,7 @@
 import { Body, Controller, Request, Get, Post, UseGuards, Patch } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import UserService from '@/model/user/user.service';
+import UserService from '@/mongo/user/user.service';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
 import { LocalAuthGuard } from './guard/local-auth.guard';

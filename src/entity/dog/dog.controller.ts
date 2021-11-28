@@ -16,6 +16,7 @@ export class DogController {
   constructor(private service: DogService) {}
 
   @Get()
+  @ApiOperation({ summary: `typeorm test` })
   index(): Promise<DogEntity[]> {
     return this.service.findAll();
   }

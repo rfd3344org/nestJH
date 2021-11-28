@@ -1,21 +1,29 @@
-import { Body, Controller, Post, UseInterceptors, UploadedFile } from '@nestjs/common';
 import {
-  ApiTags,
-  ApiConsumes,
-  ApiBody,
-} from '@nestjs/swagger'
-import { FileInterceptor } from '@nestjs/platform-express';;
-import {createWriteStream} from 'fs';
-// import UserService from './file.service';
+  Body,
+  Controller,
+  Post,
+  UseInterceptors,
+  UploadedFile,
+  Get,
+  Delete,
+  Param,
+} from '@nestjs/common';
+import { ApiTags, ApiConsumes, ApiBody, ApiParam } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { createWriteStream } from 'fs';
+import { FileService } from './file.service';
 import { CreateFileDto } from './file.dto';
 import * as _ from 'lodash';
 
 @Controller('file')
 @ApiTags('file')
 export class FileController {
-  constructor(
-    // private readonly userService: UserService
-  ) {}
+  constructor(private readonly service: FileService) {}
+
+  @Get()
+  getAll() {
+    return this.service.findAll();
+  }
 
   @Post()
   @ApiConsumes('multipart/form-data')
@@ -31,14 +39,13 @@ export class FileController {
     },
   })
   @UseInterceptors(FileInterceptor('file'))
-  create(
-    @UploadedFile() file: Express.Multer.File
-  ) {
-    console.warn(file)
-    const ws = createWriteStream('uploadFiles/custom_filename.png')
-    ws.write(file.buffer)
-    const res = _.omit(file, 'buffer')
-    return res;
+  create(@UploadedFile() file: Express.Multer.File) {
+    return this.service.saveFile(file);
   }
 
+  @Delete(':id')
+  @ApiParam({ name: 'id'})
+  async delete(@Param('id') id): Promise<any> {
+    return this.service.delete(id);
+  }
 }

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DogModule } from './dog/dog.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { DogModule } from './dog/dog.module';
       synchronize: true,
     }),
     DogModule,
+    FileModule,
   ],
 })
 export class EntityModule {}

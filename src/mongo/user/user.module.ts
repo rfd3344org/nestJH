@@ -12,4 +12,4 @@ import UserController from './user.controller';
   controllers: [UserController],
   exports: [UserService],
 })
-export default class UserModule {}
+export class UserModule {}

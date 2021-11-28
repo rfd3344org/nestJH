@@ -15,21 +15,22 @@ export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Get()
+  @ApiOperation({ summary: `mongoDB test` })
+  @ApiQuery({ name: 'EnumDemo', enum: ['Admin', 'Moderator', 'User'] })
+  @ApiQuery({ name: `ApiQuery`, example: `example` })
   getAll() {
     return this.catsService.find();
   }
 
   @Get(':id')
-  @ApiParam({ name: 'id', example: '61349adbfeb0af352aa23199' })
+  @ApiParam({ name: 'id', example: '619d9dc18fb83c3b6fdd00db' })
   getById(@Param('id') id: string) {
     return this.catsService.findById(id);
   }
 
   @Post()
-  @ApiOperation({ summary: `called ApiOperation` })
-  @ApiHeader({ name: 'token' })
-  @ApiQuery({ name: `ApiQuery`, example: `example` })
-  @ApiQuery({ name: 'EnumDemo', enum: ['Admin', 'Moderator', 'User'] })
+  // @ApiHeader({ name: 'token' })
+
   create(@Body() createCatDto: CreateCatDto) {
     return this.catsService.create(createCatDto);
   }
