@@ -6,8 +6,8 @@ import { AppConfigModule } from './config/config.module';
 import { TasksModule } from './job/tasks/tasks.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
-import { EntityModule } from './entity/EntityModule';
-import { MongoModule } from './mongo/MongoModule';
+import { EntityModule } from './sqlDB/EntityModule';
+import { MongoModule } from './mongoDB/MongoModule';
 
 import { AppController } from './app.controller';
 

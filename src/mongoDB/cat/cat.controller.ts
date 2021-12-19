@@ -19,6 +19,7 @@ export class CatsController {
   @ApiQuery({ name: 'EnumDemo', enum: ['Admin', 'Moderator', 'User'] })
   @ApiQuery({ name: `ApiQuery`, example: `example` })
   getAll() {
+    console.warn('getAll')
     return this.catsService.find();
   }
 

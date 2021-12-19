@@ -20,7 +20,7 @@ import { AuthWithRole } from '@/common/decorator/authWithRole.decorator';
 @ApiTags('user')
 // @ApiBearerAuth()
 // @Roles('Role.Admin')
-  @AuthWithRole(Role.Viewer)
+  // @AuthWithRole(Role.Viewer)
 export default class UserController {
   constructor(private readonly userService: UserService) {}
   // get update create delete
