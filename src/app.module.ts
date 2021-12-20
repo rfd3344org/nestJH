@@ -2,11 +2,11 @@ import { CacheModule, Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { AppConfigModule } from './config/config.module';
+import { AppConfigModule } from './config/appConfig.module';
 import { TasksModule } from './job/tasks/tasks.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
-import { EntityModule } from './sqlDB/EntityModule';
+import { SqlDbModule } from './sqlDb/SqlDbModule';
 import { MongoModule } from './mongoDB/MongoModule';
 
 import { AppController } from './app.controller';
@@ -19,7 +19,7 @@ import { AppController } from './app.controller';
     MailModule,
     TasksModule,
     AuthModule,
-    EntityModule,
+    SqlDbModule,
     MongoModule,
 
     // todo: use configService create service folder

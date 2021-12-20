@@ -10,13 +10,12 @@ import { DogService } from './dog.service';
 import { DogEntity } from './dog.entity';
 import { CreateDogDto } from './dog.dto';
 
-@Controller('dog')
-@ApiTags('dog')
+@Controller('Dog')
+@ApiTags('Dog (typeorm test)')
 export class DogController {
   constructor(private service: DogService) {}
 
   @Get()
-  @ApiOperation({ summary: `typeorm test` })
   index(): Promise<DogEntity[]> {
     return this.service.findAll();
   }

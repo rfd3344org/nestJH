@@ -1,6 +1,6 @@
 
 import { Global, Module } from '@nestjs/common';
-import { AppConfigService } from './config.service';
+import { AppConfigService } from './appConfig.service';
 
 /**
  * Import and provide app configuration related classes.

@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DogModule } from './dog/dog.module';
 import { FileModule } from './file/file.module';
+import { LensWizardModule } from './lensWizard/lensWizard.module';
+
+
 
 @Module({
   imports: [
@@ -13,6 +16,7 @@ import { FileModule } from './file/file.module';
     }),
     DogModule,
     FileModule,
+    LensWizardModule,
   ],
 })
-export class EntityModule {}
+export class SqlDbModule {}

@@ -1,7 +1,7 @@
 import { Body, CACHE_MANAGER, Controller, Get, Inject, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { MailService } from '@/mail/mail.service';
-import { AppConfigService } from './config/config.service';
+import { AppConfigService } from './config/appConfig.service';
 
 export class SampleDto {
   file: string;

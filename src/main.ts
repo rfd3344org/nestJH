@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
 import { RequestMethod } from '@nestjs/common';
-import { AppConfigService } from './config/config.service';
+import { AppConfigService } from './config/appConfig.service';
 
 async function bootstrap() {
   // setup app

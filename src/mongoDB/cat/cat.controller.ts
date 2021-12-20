@@ -6,13 +6,13 @@ import {
   ApiHeader,
   ApiParam,
 } from '@nestjs/swagger';
-import { CatsService } from './cat.service';
+import { CatService } from './cat.service';
 import { CreateCatDto } from './cat.dto';
 
-@Controller('cat')
-@ApiTags('cat')
+@Controller('Cat')
+@ApiTags('Cat (mongoDB test)')
 export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
+  constructor(private readonly catsService: CatService) {}
 
   @Get()
   @ApiOperation({ summary: `mongoDB test` })

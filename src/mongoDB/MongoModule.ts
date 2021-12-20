@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CatsModule } from './cat/cat.module';
 import { UserModule } from './user/user.module';
 
-import { AppConfigService } from '@/config/config.service';
+import { AppConfigService } from '@/config/appConfig.service';
 
 @Module({
   imports: [

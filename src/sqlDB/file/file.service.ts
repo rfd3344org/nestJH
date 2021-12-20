@@ -9,7 +9,7 @@ import { createWriteStream } from 'fs';
 import { v4 as uuid } from 'uuid';
 
 import { FileEntity } from './file.entity';
-import { AppConfigService } from '@/config/config.service';
+import { AppConfigService } from '@/config/appConfig.service';
 import { CreateFileDto } from './file.dto';
 
 

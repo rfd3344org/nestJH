@@ -5,7 +5,7 @@ import { CreateCatDto } from './cat.dto';
 import { Cat, CatDocument } from './cat.schema';
 
 @Injectable()
-export class CatsService {
+export class CatService {
   constructor(
     @InjectModel(Cat.name) private readonly model: Model<CatDocument>,
   ) {}
