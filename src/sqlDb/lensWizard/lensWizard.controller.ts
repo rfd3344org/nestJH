@@ -15,7 +15,7 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { LensWizardService } from './lensWizard.service';
-import { LensWizardEntity } from './lensWizard.entity';
+import { LensWizard } from './lensWizard.entity';
 import { CreateLensWizardDto, CreateDecisionDto } from './lensWizard.dto';
 
 @Controller('LensWizard')
@@ -24,7 +24,7 @@ export class LensWizardController {
   constructor(private service: LensWizardService) {}
 
   @Get()
-  index(): Promise<LensWizardEntity[]> {
+  index(): Promise<LensWizard[]> {
     return this.service.findAll();
   }
 
@@ -37,7 +37,7 @@ export class LensWizardController {
   @ApiParam({ name: 'id' })
   async update(
     @Param('id') id,
-    @Body() entityData: LensWizardEntity,
+    @Body() entityData: LensWizard,
   ): Promise<any> {
     entityData.id = Number(id);
     return this.service.update(entityData);

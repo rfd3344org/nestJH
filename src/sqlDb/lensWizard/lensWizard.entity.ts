@@ -1,36 +1,31 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
-export class LensWizardEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class LensWizard {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
+  @OneToMany((type) => Decision, (decision) => decision.wizard)
+  decisions: Decision[];
 
-
-    @OneToMany((type) => DecisionEntity, (decision) => decision.wizard)
-    decisions: DecisionEntity[];
-
-    // @Column()
-    // steps: string;
+  // @Column()
+  // steps: string;
 }
 
-
-
-
 @Entity()
-export class DecisionEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+export class Decision {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    wizard: string;
+  @Column()
+  wizard: string;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    // @Column()
-    // steps: string;
+  // @Column()
+  // steps: string;
 }

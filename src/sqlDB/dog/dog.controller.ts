@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Body,
+  Param,
+} from '@nestjs/common';
 import {
   ApiOperation,
   ApiTags,
@@ -7,7 +15,7 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { DogService } from './dog.service';
-import { DogEntity } from './dog.entity';
+import { Dog } from './dog.entity';
 import { CreateDogDto } from './dog.dto';
 
 @Controller('Dog')
@@ -16,24 +24,23 @@ export class DogController {
   constructor(private service: DogService) {}
 
   @Get()
-  index(): Promise<DogEntity[]> {
+  index(): Promise<Dog[]> {
     return this.service.findAll();
   }
 
   @Post()
-  async create(@Body() entitytData: CreateDogDto): Promise<any> {
-    return this.service.create(entitytData);
+  async create(@Body() body: CreateDogDto): Promise<Dog> {
+    return this.service.create(body);
   }
 
   @Patch(':id')
   @ApiParam({ name: 'id' })
-  async update(@Param('id') id, @Body() entityData: DogEntity): Promise<any> {
-      entityData.id = Number(id);
-      return this.service.update(entityData);
+  async update(@Param('id') id, @Body() body: Dog): Promise<any> {
+    return this.service.update(id, body);
   }
 
   @Delete(':id')
-    async delete(@Param('id') id): Promise<any> {
-      return this.service.delete(id);
+  async delete(@Param('id') id): Promise<any> {
+    return this.service.delete(id);
   }
 }

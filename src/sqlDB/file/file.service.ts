@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 import { createWriteStream } from 'fs';
 import { v4 as uuid } from 'uuid';
 
-import { FileEntity } from './file.entity';
+import { File } from './file.entity';
 import { AppConfigService } from '@/config/appConfig.service';
 import { CreateFileDto } from './file.dto';
 
@@ -16,16 +16,16 @@ import { CreateFileDto } from './file.dto';
 @Injectable()
 export class FileService {
   constructor(
-    @InjectRepository(FileEntity)
-    private entityRepository: Repository<FileEntity>,
+    @InjectRepository(File)
+    private entityRepository: Repository<File>,
     private configService: AppConfigService,
   ) {}
 
-  async findAll(): Promise<FileEntity[]> {
+  async findAll(): Promise<File[]> {
     return await this.entityRepository.find();
   }
 
-  async create(filePath: CreateFileDto): Promise<FileEntity> {
+  async create(filePath: CreateFileDto): Promise<File> {
     console.warn({
       created_utc: Date.now(),
       ...filePath
@@ -36,7 +36,7 @@ export class FileService {
     });
   }
 
-  async update(entity: FileEntity): Promise<UpdateResult> {
+  async update(entity: File): Promise<UpdateResult> {
     return await this.entityRepository.update(entity.id, entity);
   }
 
