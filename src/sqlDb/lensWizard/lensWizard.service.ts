@@ -9,28 +9,32 @@ import { CreateLensWizardDto } from './lensWizard.dto';
 export class LensWizardService {
   constructor(
     @InjectRepository(LensWizard)
-    private entityRepository: Repository<LensWizard>,
+    private lensWizardRepo: Repository<LensWizard>,
     @InjectRepository(Decision)
-    private decisionRepository: Repository<Decision>,
+    private decisionRepo: Repository<Decision>,
   ) {}
 
   async findAll(): Promise<LensWizard[]> {
-    return await this.entityRepository.find();
+    return await this.lensWizardRepo.find({ relations: ['decisions']});
   }
 
-  async create(entity: CreateLensWizardDto): Promise<LensWizard> {
-    return await this.entityRepository.save(entity);
+  async create(entity: CreateLensWizardDto): Promise<any> {
+    return await this.lensWizardRepo.save(entity);
   }
 
   async update(entity: LensWizard): Promise<UpdateResult> {
-    return await this.entityRepository.update(entity.id, entity);
+    return await this.lensWizardRepo.update(entity.id, entity);
   }
 
   async delete(id): Promise<DeleteResult> {
-    return await this.entityRepository.delete(id);
+    return await this.lensWizardRepo.delete(id);
+  }
+
+  async findAllDecision({ wizardId }): Promise<Decision[]> {
+    return await this.decisionRepo.find();
   }
 
   async createDecision({ wizardId, entity }): Promise<Decision> {
-    return await this.decisionRepository.save({ ...entity, wizard: wizardId });
+    return await this.decisionRepo.save({ ...entity, wizard: wizardId });
   }
 }

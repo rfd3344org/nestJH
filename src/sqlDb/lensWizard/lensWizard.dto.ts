@@ -4,13 +4,9 @@ export class CreateLensWizardDto {
   @ApiProperty({ default: 'LensWizard' })
   name: string;
 
-  @ApiProperty({ default: 'gray' })
-  color: string;
-
-  @ApiProperty({ default: '12' })
-  age: number;
+  // @ApiProperty({ default: [] })
+  // decisions: number[];
 }
-
 
 export class CreateDecisionDto {
   @ApiProperty({ default: 'color' })
@@ -19,6 +15,6 @@ export class CreateDecisionDto {
   @ApiProperty({ default: '1' })
   wizard: string;
 
-  // @ApiProperty({ default: '12' })
-  // age: number;
+  @ApiProperty({ default: [] })
+  choices: string[];
 }

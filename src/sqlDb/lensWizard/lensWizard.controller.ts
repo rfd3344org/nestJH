@@ -29,8 +29,8 @@ export class LensWizardController {
   }
 
   @Post()
-  async create(@Body() entitytData: CreateLensWizardDto): Promise<any> {
-    return this.service.create(entitytData);
+  async create(@Body() body: CreateLensWizardDto): Promise<any> {
+    return this.service.create(body);
   }
 
   @Patch(':id')
@@ -46,6 +46,15 @@ export class LensWizardController {
   @Delete(':id')
   async delete(@Param('id') id): Promise<any> {
     return this.service.delete(id);
+  }
+
+
+  @Get(':wizardId/decision')
+  @ApiParam({ name: 'wizardId', example: '1' })
+  async getAllDecision(
+    @Param('wizardId') wizardId,
+  ): Promise<any> {
+    return this.service.findAllDecision({ wizardId });
   }
 
   @Post(':wizardId/decision')
