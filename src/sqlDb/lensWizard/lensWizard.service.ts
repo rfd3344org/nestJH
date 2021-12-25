@@ -31,10 +31,13 @@ export class LensWizardService {
   }
 
   async findAllDecision({ wizardId }): Promise<Decision[]> {
-    return await this.decisionRepo.find();
+    return await this.decisionRepo.find({ relations: ['choices']});
   }
 
-  async createDecision({ wizardId, entity }): Promise<Decision> {
-    return await this.decisionRepo.save({ ...entity, wizard: wizardId });
+
+  async createDecision({ wizardId, body }): Promise<Decision> {
+    console.warn({ ...body, wizard: wizardId });
+
+    return await this.decisionRepo.save({ ...body, wizard: wizardId });
   }
 }

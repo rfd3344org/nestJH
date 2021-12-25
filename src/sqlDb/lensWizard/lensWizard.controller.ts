@@ -35,10 +35,7 @@ export class LensWizardController {
 
   @Patch(':id')
   @ApiParam({ name: 'id' })
-  async update(
-    @Param('id') id,
-    @Body() entityData: LensWizard,
-  ): Promise<any> {
+  async update(@Param('id') id, @Body() entityData: LensWizard): Promise<any> {
     entityData.id = Number(id);
     return this.service.update(entityData);
   }
@@ -48,12 +45,9 @@ export class LensWizardController {
     return this.service.delete(id);
   }
 
-
   @Get(':wizardId/decision')
   @ApiParam({ name: 'wizardId', example: '1' })
-  async getAllDecision(
-    @Param('wizardId') wizardId,
-  ): Promise<any> {
+  async getAllDecision(@Param('wizardId') wizardId): Promise<any> {
     return this.service.findAllDecision({ wizardId });
   }
 
@@ -61,8 +55,8 @@ export class LensWizardController {
   @ApiParam({ name: 'wizardId', example: '1' })
   async createDecision(
     @Param('wizardId') wizardId,
-    @Body() entityData: CreateDecisionDto,
+    @Body() body: CreateDecisionDto,
   ): Promise<any> {
-    return this.service.createDecision({ wizardId, entity: entityData });
+    return this.service.createDecision({ wizardId, body });
   }
 }

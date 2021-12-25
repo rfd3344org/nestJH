@@ -16,17 +16,17 @@ export class LensWizard {
 
   @Column()
   name: string;
-
 }
 
 @Entity()
 export class Decision {
-
   @ManyToOne(() => LensWizard, (lensWizard) => lensWizard.decisions)
   @Column()
   wizard: number;
 
-  @OneToMany(() => Choice, (choice) => choice.decision)
+  @OneToMany(() => Choice, (choice) => choice.decision, {
+    cascade: true,
+  })
   choices: Choice[];
 
   @PrimaryGeneratedColumn()
@@ -34,15 +34,11 @@ export class Decision {
 
   @Column()
   name: string;
-
 }
-
-
 
 @Entity()
 export class Choice {
-
-  @ManyToOne(() => Decision, (decision) => decision.choices)
+  @ManyToOne(() => Decision, (decision) => decision.name)
   @Column()
   decision: number;
 
@@ -51,5 +47,4 @@ export class Choice {
 
   @Column()
   name: string;
-
 }
