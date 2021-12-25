@@ -21,8 +21,7 @@ export class LensWizard {
 @Entity()
 export class Decision {
   @ManyToOne(() => LensWizard, (lensWizard) => lensWizard.decisions)
-  @Column()
-  wizard: number;
+  wizard: LensWizard;
 
   @OneToMany(() => Choice, (choice) => choice.decision, {
     cascade: true,
@@ -38,9 +37,8 @@ export class Decision {
 
 @Entity()
 export class Choice {
-  @ManyToOne(() => Decision, (decision) => decision.name)
-  @Column()
-  decision: number;
+  @ManyToOne(() => Decision, (decision) => decision.choices)
+  decision: Decision;
 
   @PrimaryGeneratedColumn()
   id: number;

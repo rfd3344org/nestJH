@@ -15,7 +15,7 @@ export class LensWizardService {
   ) {}
 
   async findAll(): Promise<LensWizard[]> {
-    return await this.lensWizardRepo.find({ relations: ['decisions']});
+    return await this.lensWizardRepo.find({ relations: ['decisions', 'decisions.choices']});
   }
 
   async create(entity: CreateLensWizardDto): Promise<any> {
