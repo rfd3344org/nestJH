@@ -8,7 +8,9 @@ import {
 
 @Entity()
 export class LensWizard {
-  @OneToMany((type) => Decision, (decision) => decision.wizard)
+  @OneToMany((type) => Decision, (decision) => decision.wizard, {
+    cascade: false,
+  })
   decisions: Decision[];
 
   @OneToMany((type) => Step, (step) => step.wizard, {
@@ -32,8 +34,10 @@ export class Decision {
 
   @OneToMany(() => Choice, (choice) => choice.decision, {
     cascade: true,
+    // onDelete: 'CASCADE',
+    // onUpdate: 'CASCADE',
   })
-  choices: Choice[];
+  public choices: Choice[];
 
   @PrimaryGeneratedColumn()
   id: number;
@@ -45,7 +49,7 @@ export class Decision {
 @Entity()
 export class Choice {
   @ManyToOne(() => Decision, (decision) => decision.choices)
-  decision: Decision;
+  public decision: Decision;
 
   @PrimaryGeneratedColumn()
   id: number;
@@ -54,27 +58,23 @@ export class Choice {
   name: string;
 }
 
-
-
 @Entity()
 export class Step {
   @ManyToOne(() => LensWizard, (lensWizard) => lensWizard.steps)
   wizard: LensWizard;
 
-  // @ManyToOne(() => Choice)
-  // choice: Choice;
+  @ManyToOne(() => Choice)
+  choice: Choice;
 
-  // @ManyToOne(type => Step, step => step.children)
-  // parent: Step;
+  @ManyToOne(type => Step, step => step.children)
+  parent: Step;
 
-  // @OneToMany(type => Step, step => step.parent)
-  // children: Step[];
+  @OneToMany(type => Step, step => step.parent)
+  children: Step[];
 
   @PrimaryGeneratedColumn()
   id: number;
 
-
   @Column()
   disabled: boolean;
-
 }
