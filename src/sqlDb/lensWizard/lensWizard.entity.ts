@@ -11,6 +11,11 @@ export class LensWizard {
   @OneToMany((type) => Decision, (decision) => decision.wizard)
   decisions: Decision[];
 
+  @OneToMany((type) => Step, (step) => step.wizard, {
+    cascade: true,
+  })
+  steps: Step[];
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,7 +25,9 @@ export class LensWizard {
 
 @Entity()
 export class Decision {
-  @ManyToOne(() => LensWizard, (lensWizard) => lensWizard.decisions)
+  @ManyToOne(() => LensWizard, 'id', {
+    eager: true,
+  })
   wizard: LensWizard;
 
   @OneToMany(() => Choice, (choice) => choice.decision, {
@@ -45,4 +52,29 @@ export class Choice {
 
   @Column()
   name: string;
+}
+
+
+
+@Entity()
+export class Step {
+  @ManyToOne(() => LensWizard, (lensWizard) => lensWizard.steps)
+  wizard: LensWizard;
+
+  // @ManyToOne(() => Choice)
+  // choice: Choice;
+
+  // @ManyToOne(type => Step, step => step.children)
+  // parent: Step;
+
+  // @OneToMany(type => Step, step => step.parent)
+  // children: Step[];
+
+  @PrimaryGeneratedColumn()
+  id: number;
+
+
+  @Column()
+  disabled: boolean;
+
 }

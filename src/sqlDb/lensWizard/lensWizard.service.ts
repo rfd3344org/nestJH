@@ -14,30 +14,42 @@ export class LensWizardService {
     private decisionRepo: Repository<Decision>,
   ) {}
 
-  async findAll(): Promise<LensWizard[]> {
-    return await this.lensWizardRepo.find({ relations: ['decisions', 'decisions.choices']});
+  async getLensWizards(): Promise<LensWizard[]> {
+    return await this.lensWizardRepo.find({
+      // relations: ['decisions', 'decisions.choices'],
+    });
   }
 
-  async create(entity: CreateLensWizardDto): Promise<any> {
+  async findLensWizard({ id }): Promise<LensWizard> {
+    return await this.lensWizardRepo.findOne(id, {
+      relations: ['decisions', 'decisions.choices', 'steps'],
+    });
+  }
+
+  async createLensWizard(entity: CreateLensWizardDto): Promise<any> {
     return await this.lensWizardRepo.save(entity);
   }
 
-  async update(entity: LensWizard): Promise<UpdateResult> {
+  async updateLensWizard(entity: LensWizard): Promise<UpdateResult> {
     return await this.lensWizardRepo.update(entity.id, entity);
   }
 
-  async delete(id): Promise<DeleteResult> {
+  async deleteLensWizard(id): Promise<DeleteResult> {
     return await this.lensWizardRepo.delete(id);
   }
 
-  async findAllDecision({ wizardId }): Promise<Decision[]> {
-    return await this.decisionRepo.find({ relations: ['choices']});
+  async getDecisions({ wizardId }): Promise<Decision[]> {
+    return await this.decisionRepo.find({
+      relations: ['choices'],
+    });
   }
 
+  async createDecision({ wizardId, createDto }): Promise<Decision> {
+    const savingQuery = { ...createDto, wizard: wizardId };
+    return await this.decisionRepo.save(savingQuery);
+  }
 
-  async createDecision({ wizardId, body }): Promise<Decision> {
-    console.warn({ ...body, wizard: wizardId });
-
-    return await this.decisionRepo.save({ ...body, wizard: wizardId });
+  async updateDecision(id, updatingQuery): Promise<any> {
+    return await this.decisionRepo.update(id, updatingQuery);
   }
 }
