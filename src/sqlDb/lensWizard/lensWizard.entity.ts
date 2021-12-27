@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -60,21 +61,30 @@ export class Choice {
 
 @Entity()
 export class Step {
-  @ManyToOne(() => LensWizard, (lensWizard) => lensWizard.steps)
+
+
+  // @ManyToOne(() => Choice)
+  // choice: Choice;
+
+  @Column()
+  public choiceId: number;
+
+  @Column()
+  wizardId: number;
+  @ManyToOne(() => LensWizard)
   wizard: LensWizard;
 
-  @ManyToOne(() => Choice)
-  choice: Choice;
-
-  @ManyToOne(type => Step, step => step.children)
+  @ManyToOne((type) => Step, (step) => step.children)
   parent: Step;
 
-  @OneToMany(type => Step, step => step.parent)
+  @OneToMany((type) => Step, (step) => step.parent)
   children: Step[];
 
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ default: false })
   disabled: boolean;
+
+
 }

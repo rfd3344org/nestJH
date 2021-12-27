@@ -7,7 +7,7 @@ import {
   FindOneOptions,
   FindConditions,
 } from 'typeorm';
-import { LensWizard, Decision } from './lensWizard.entity';
+import { LensWizard, Decision, Step } from './lensWizard.entity';
 import { CreateLensWizardDto } from './lensWizard.dto';
 import { updateCascadeDB } from '@/utils/typeorm.utils';
 
@@ -18,6 +18,8 @@ export class LensWizardService {
     private lensWizardRepo: Repository<LensWizard>,
     @InjectRepository(Decision)
     private decisionRepo: Repository<Decision>,
+    @InjectRepository(Step)
+    private stepRepo: Repository<Step>,
   ) {}
 
   private readonly lensWizardRelations = [
@@ -43,9 +45,20 @@ export class LensWizardService {
     return await this.lensWizardRepo.save(entity);
   }
 
-
   async updateLensWizard(id, updatingQuery: any): Promise<UpdateResult> {
     // return await this.lensWizardRepo.update(entity.id, entity);
+
+    const rootStep = new Step();
+    rootStep.choiceId =  34;
+    rootStep.wizardId = 1;
+    const res = await this.stepRepo.save(rootStep);
+
+    console.warn(res)
+
+    const nextUpdateQuery = {
+      ...updatingQuery,
+      // steps: [rootStep]
+    }
     return updateCascadeDB(
       this.lensWizardRepo,
       id,
