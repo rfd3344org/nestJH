@@ -10,12 +10,12 @@ import {
 
 @Entity()
 export class LensWizard {
-  @OneToMany((type) => Decision, (decision) => decision.wizard, {
+  @OneToMany((type) => Decision, (item) => item.wizard, {
     cascade: false,
   })
   decisions: Decision[];
 
-  @OneToMany((type) => Step, (step) => step.wizard, {
+  @OneToMany((type) => Step, (item) => item.wizard, {
     cascade: true,
     eager: true,
   })
@@ -30,56 +30,49 @@ export class LensWizard {
 
 @Entity()
 export class Decision {
-  @ManyToOne(() => LensWizard, 'id', {
-    eager: true,
-  })
-  wizard: LensWizard;
-
-  // @Column()
-  // wizardId: number;
-
-  @OneToMany(() => Choice, (choice) => choice.decision, {
-    cascade: true,
-    // onDelete: 'CASCADE',
-    // onUpdate: 'CASCADE',
-  })
-  public choices: Choice[];
-
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   name: string;
-}
-
-@Entity()
-export class Choice {
-  @ManyToOne(() => Decision, (decision) => decision.choices)
-  decision: Decision;
-
-  // @OneToMany(() => Step, step=> step.choice)
-  // steps: Decision;
-
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  name: string;
-}
-
-@Entity()
-export class Step {
-  @ManyToOne(() => Choice)
-  @JoinColumn({ name: 'choiceId' })
-  public choice: Choice;
-
-  @RelationId((step: Step) => step.choice)
-  public choiceId: number;
 
   @Column()
   wizardId: number;
   @ManyToOne(() => LensWizard)
   wizard: LensWizard;
+
+  @OneToMany(() => Choice, (item) => item.decision, {
+    cascade: true,
+  })
+  public choices: Choice[];
+}
+
+@Entity()
+export class Choice {
+  @Column()
+  decisionId: number;
+  @ManyToOne(() => Decision)
+  decision: Decision;
+
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  name: string;
+
+}
+
+@Entity()
+export class Step {
+  @Column()
+  wizardId: number;
+  @ManyToOne(() => LensWizard)
+  wizard: LensWizard;
+
+  @Column()
+  choiceId: number;
+  @ManyToOne(() => Choice)
+  choice: Choice;
 
   @ManyToOne((type) => Step, (step) => step.children)
   parent: Step;
@@ -92,4 +85,6 @@ export class Step {
 
   @Column({ default: false })
   disabled: boolean;
+
+
 }
