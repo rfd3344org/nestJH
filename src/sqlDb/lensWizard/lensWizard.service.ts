@@ -49,16 +49,17 @@ export class LensWizardService {
     // return await this.lensWizardRepo.update(entity.id, entity);
 
     const rootStep = new Step();
-    rootStep.choiceId =  34;
+    rootStep.choiceId = 1;
     rootStep.wizardId = 1;
-    const res = await this.stepRepo.save(rootStep);
 
-    console.warn(res)
+    // const res = await this.stepRepo.save(rootStep);
+
+    console.warn(rootStep);
 
     const nextUpdateQuery = {
       ...updatingQuery,
       // steps: [rootStep]
-    }
+    };
     return updateCascadeDB(
       this.lensWizardRepo,
       id,

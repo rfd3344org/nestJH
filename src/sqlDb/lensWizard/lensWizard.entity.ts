@@ -5,6 +5,7 @@ import {
   OneToMany,
   ManyToOne,
   JoinColumn,
+  RelationId,
 } from 'typeorm';
 
 @Entity()
@@ -16,6 +17,7 @@ export class LensWizard {
 
   @OneToMany((type) => Step, (step) => step.wizard, {
     cascade: true,
+    eager: true,
   })
   steps: Step[];
 
@@ -32,6 +34,9 @@ export class Decision {
     eager: true,
   })
   wizard: LensWizard;
+
+  // @Column()
+  // wizardId: number;
 
   @OneToMany(() => Choice, (choice) => choice.decision, {
     cascade: true,
@@ -50,7 +55,10 @@ export class Decision {
 @Entity()
 export class Choice {
   @ManyToOne(() => Decision, (decision) => decision.choices)
-  public decision: Decision;
+  decision: Decision;
+
+  // @OneToMany(() => Step, step=> step.choice)
+  // steps: Decision;
 
   @PrimaryGeneratedColumn()
   id: number;
@@ -61,12 +69,11 @@ export class Choice {
 
 @Entity()
 export class Step {
+  @ManyToOne(() => Choice)
+  @JoinColumn({ name: 'choiceId' })
+  public choice: Choice;
 
-
-  // @ManyToOne(() => Choice)
-  // choice: Choice;
-
-  @Column()
+  @RelationId((step: Step) => step.choice)
   public choiceId: number;
 
   @Column()
@@ -85,6 +92,4 @@ export class Step {
 
   @Column({ default: false })
   disabled: boolean;
-
-
 }
