@@ -4,8 +4,6 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
-  JoinColumn,
-  RelationId,
 } from 'typeorm';
 
 @Entity()
@@ -30,12 +28,6 @@ export class LensWizard {
 
 @Entity()
 export class Decision {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  name: string;
-
   @Column()
   wizardId: number;
   @ManyToOne(() => LensWizard)
@@ -44,7 +36,14 @@ export class Decision {
   @OneToMany(() => Choice, (item) => item.decision, {
     cascade: true,
   })
-  public choices: Choice[];
+  choices: Choice[];
+
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  name: string;
+
 }
 
 @Entity()
@@ -74,14 +73,16 @@ export class Step {
   @ManyToOne(() => Choice)
   choice: Choice;
 
-  @ManyToOne((type) => Step, (step) => step.children)
-  parent: Step;
 
-  @OneToMany((type) => Step, (step) => step.parent)
-  children: Step[];
+  @Column({nullable: true})
+  parentId: number;
+
 
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  name: string;
 
   @Column({ default: false })
   disabled: boolean;
