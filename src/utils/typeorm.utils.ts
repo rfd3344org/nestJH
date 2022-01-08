@@ -1,3 +1,9 @@
+import {
+  Column,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+
 export const updateCascadeDB = async (
   repo,
   id,
@@ -11,3 +17,14 @@ export const updateCascadeDB = async (
   };
   return await repo.save(nextEntity);
 };
+
+
+
+export abstract class UUIDName {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
+  name: string;
+
+}

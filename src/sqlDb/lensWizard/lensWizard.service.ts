@@ -39,15 +39,6 @@ export class LensWizardService {
   async findLensWizard(id: number, options: any = {}): Promise<any> {
     const steps = await this.stepRepo.find({ where: { wizardId: id } });
 
-    // const stepsMapParentId = steps.reduce((acc, item) => {
-    //   const parentId = item.parentId;
-    //   if (_.isUndefined(acc[parentId])) acc[parentId] = [];
-    //   console.warn(acc);
-    //   acc[parentId].push(item);
-    //   return acc;
-    // }, {});
-    // console.warn(stepsMapParentId);
-
     const stepTree = buildTree(steps)
     console.warn(stepTree);
 
@@ -56,7 +47,7 @@ export class LensWizardService {
       ...options,
     });
 
-    if(!lensWizard) return {};
+    if(!lensWizard.id) return {};
 
     return {
       ...lensWizard,
@@ -69,21 +60,21 @@ export class LensWizardService {
   }
 
   async updateLensWizard(id, updatingQuery: any): Promise<any> {
-    const step1 = this.stepRepo.create({
-      id: 1231232,
-      name: '11',
-      wizardId: 1,
-      choiceId: 1,
-    });
+    // const step1 = this.stepRepo.create({
+    //   id: '1231232',
+    //   name: '11',
+    //   wizardId: '1',
+    //   choiceId: '1',
+    // });
 
-    const step2 = this.stepRepo.create({
-      name: '22',
-      wizardId: 1,
-      choiceId: 2,
-      parentId: step1.id,
-    });
+    // const step2 = this.stepRepo.create({
+    //   name: '22',
+    //   wizardId: '1',
+    //   choiceId: '2',
+    //   parentId: step1.id,
+    // });
 
-    this.stepRepo.save([step1, step2]);
+    // this.stepRepo.save([step1, step2]);
 
     // return await this.lensWizardRepo.update(entity.id, entity);
 

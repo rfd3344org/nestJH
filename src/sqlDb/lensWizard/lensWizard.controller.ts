@@ -45,7 +45,7 @@ export class LensWizardController {
     @Param('id') id,
     @Body() entityData: LensWizard,
   ): Promise<any> {
-    entityData.id = Number(id);
+    entityData.id = id;
     return this.service.updateLensWizard(id, entityData);
   }
 

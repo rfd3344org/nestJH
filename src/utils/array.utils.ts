@@ -1,6 +1,8 @@
-
 export const buildTree = (list, parentId = 'parentId') => {
-  var map = {}, node, roots = [], i;
+  var map = {},
+    node,
+    roots = [],
+    i;
 
   for (i = 0; i < list.length; i += 1) {
     map[list[i].id] = i; // initialize the map
@@ -17,4 +19,19 @@ export const buildTree = (list, parentId = 'parentId') => {
     }
   }
   return roots;
-}
+};
+
+
+const flattenTree = (root = {}, children='children') => {
+  let flatten = [Object.assign({}, root)];
+  delete flatten[0][children];
+
+  if (root[children] && root[children].length > 0) {
+    return flatten.concat(root[children]
+      .map((child)=>flattenTree(child, children))
+      .reduce((a, b)=>a.concat(b), [])
+    );
+  }
+
+  return flatten;
+};

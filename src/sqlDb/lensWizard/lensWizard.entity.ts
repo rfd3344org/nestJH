@@ -5,9 +5,10 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
+import { UUIDName } from '@/utils/typeorm.utils';
 
 @Entity()
-export class LensWizard {
+export class LensWizard extends UUIDName{
   @OneToMany((type) => Decision, (item) => item.wizard, {
     cascade: false,
   })
@@ -19,15 +20,15 @@ export class LensWizard {
   })
   steps: Step[];
 
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn('uuid')
+  // id: number;
 
-  @Column()
-  name: string;
+  // @Column()
+  // name: string;
 }
 
 @Entity()
-export class Decision {
+export class Decision extends UUIDName {
   @Column()
   wizardId: number;
   @ManyToOne(() => LensWizard)
@@ -38,31 +39,29 @@ export class Decision {
   })
   choices: Choice[];
 
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn('uuid')
+  // id: number;
 
-  @Column()
-  name: string;
-
+  // @Column()
+  // name: string;
 }
 
 @Entity()
-export class Choice {
+export class Choice  extends UUIDName {
   @Column()
   decisionId: number;
   @ManyToOne(() => Decision)
   decision: Decision;
 
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn('uuid')
+  // id: number;
 
-  @Column()
-  name: string;
-
+  // @Column()
+  // name: string;
 }
 
 @Entity()
-export class Step {
+export class Step extends UUIDName {
   @Column()
   wizardId: number;
   @ManyToOne(() => LensWizard)
@@ -73,19 +72,15 @@ export class Step {
   @ManyToOne(() => Choice)
   choice: Choice;
 
-
-  @Column({nullable: true})
+  @Column({ nullable: true })
   parentId: number;
 
+  // @PrimaryGeneratedColumn()
+  // id: number;
 
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  name: string;
+  // @Column()
+  // name: string;
 
   @Column({ default: false })
   disabled: boolean;
-
-
 }
