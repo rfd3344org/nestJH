@@ -15,7 +15,7 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { DogService } from './dog.service';
-import { Dog } from './dog.entity';
+import { Dog } from './dog.model';
 import { CreateDogDto } from './dog.dto';
 
 @Controller('Dog')
@@ -36,7 +36,7 @@ export class DogController {
   @Patch(':id')
   @ApiParam({ name: 'id' })
   async update(@Param('id') id, @Body() body: Dog): Promise<any> {
-    return this.service.update(id, body);
+    return this.service.update({ id, ...body });
   }
 
   @Delete(':id')

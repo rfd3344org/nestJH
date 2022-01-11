@@ -1,32 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectModel } from '@nestjs/sequelize';
 import { UpdateResult, DeleteResult } from 'typeorm';
-import { Dog } from './dog.entity';
+import { Dog } from './dog.model';
 import { CreateDogDto } from './dog.dto';
 
 @Injectable()
 export class DogService {
   constructor(
-    @InjectRepository(Dog)
-    private dogRepo: Repository<Dog>,
+    @InjectModel(Dog)
+    private dogModel: typeof Dog,
   ) {}
 
   async findAll(): Promise<Dog[]> {
-    return await this.dogRepo.find();
+    return await this.dogModel.findAll();
   }
 
-  async create(entity: CreateDogDto): Promise<Dog> {
-    return await this.dogRepo.save(entity);
+  async create(model: CreateDogDto): Promise<any> {
+    const res = await this.dogModel.create(model);
+    return res[0];
   }
 
-  async update(id, entity: Dog): Promise<UpdateResult> {
-    const res = await this.dogRepo.update(id, entity);
-    return res;
+  async update(model: any): Promise<any> {
+    const res = await this.dogModel.upsert(model);
+    return res[0];
   }
 
   async delete(id): Promise<DeleteResult> {
-    const res = await this.dogRepo.delete(id);
+    const res = await this.dogModel.destroy(id);
     return;
   }
 }

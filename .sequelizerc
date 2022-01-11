@@ -1,0 +1,13 @@
+// .sequelizerc
+
+const path = require('path');
+const sequelizeCliPath = 'src/sqlDb/sequelizeCli';
+
+module.exports = {
+  env: 'development',
+  'config': path.resolve(sequelizeCliPath, 'config.json'),
+  'models-path': path.resolve(sequelizeCliPath, 'models'),
+  'seeders-path': path.resolve(sequelizeCliPath, 'seeders'),
+  'migrations-path': path.resolve(sequelizeCliPath, 'migrations'),
+
+};

@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { LensWizard, Decision, Step } from './lensWizard.entity';
 import { CreateLensWizardDto } from './lensWizard.dto';
-import { updateCascadeDB } from '@/utils/typeorm.utils';
+import { updateCascadeDB } from '@/utils/orm.utils';
 import * as _ from 'lodash';
 import { buildTree } from '@/utils/array.utils';
 

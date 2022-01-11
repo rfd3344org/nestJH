@@ -4,9 +4,6 @@ export class CreateDogDto {
   @ApiProperty({ default: 'dog1' })
   name: string;
 
-  @ApiProperty({ default: 'gray' })
-  color: string;
-
-  @ApiProperty({ default: '12' })
-  age: number;
+  @ApiProperty({ default: 12 })
+  dogAge: number;
 }

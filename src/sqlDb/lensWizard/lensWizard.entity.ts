@@ -5,7 +5,7 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
-import { UUIDName } from '@/utils/typeorm.utils';
+import { UUIDName } from '@/utils/orm.utils';
 
 @Entity()
 export class LensWizard extends UUIDName{

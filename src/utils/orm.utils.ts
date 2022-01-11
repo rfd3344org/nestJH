@@ -1,8 +1,25 @@
 import {
   Column,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+  IsUUID,
+  DataType,
+  Default,
+  PrimaryKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 
+
+@Table({ underscored: true })
+export abstract class BaseModel extends Model {
+  @IsUUID(4)
+  @PrimaryKey
+  @Default(DataType.UUIDV4)
+  @Column
+  id: string;
+
+  @Column
+  name: string;
+}
 
 export const updateCascadeDB = async (
   repo,
@@ -19,12 +36,10 @@ export const updateCascadeDB = async (
 };
 
 
-
 export abstract class UUIDName {
-  @PrimaryGeneratedColumn('uuid')
+  @Column
   id: string;
 
-  @Column()
+  @Column
   name: string;
-
 }
