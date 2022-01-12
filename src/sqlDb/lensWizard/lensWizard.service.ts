@@ -1,53 +1,55 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import {
-  UpdateResult,
-  DeleteResult,
-  FindOneOptions,
-  FindConditions,
-} from 'typeorm';
-import { LensWizard, Decision, Step } from './lensWizard.entity';
-import { CreateLensWizardDto } from './lensWizard.dto';
-import { updateCascadeDB } from '@/utils/orm.utils';
+import { InjectModel } from '@nestjs/sequelize';
 import * as _ from 'lodash';
+
+import { updateCascadeDB } from '@/utils/orm.utils';
 import { buildTree } from '@/utils/array.utils';
+
+import { LensWizard, Decision, Choice, Step } from './lensWizard.model';
+import { CreateLensWizardDto } from './lensWizard.dto';
 
 @Injectable()
 export class LensWizardService {
   constructor(
-    @InjectRepository(LensWizard)
-    private lensWizardRepo: Repository<LensWizard>,
-    @InjectRepository(Decision)
-    private decisionRepo: Repository<Decision>,
-    @InjectRepository(Step)
-    private stepRepo: Repository<Step>,
+    @InjectModel(LensWizard)
+    private lensWizardRepo: typeof LensWizard,
+    @InjectModel(Decision)
+    private decisionRepo: typeof Decision,
+    @InjectModel(Step)
+    private stepRepo: typeof Step,
   ) {}
 
-  private readonly lensWizardRelations = [
-    'decisions',
-    'decisions.choices',
-    'steps',
-  ];
+  private readonly lensWizardOption = {
+    include: [{model: Decision, include: [Choice]}, Step],
+    // include: { all: true},
+  };
+  private readonly decisionOption = {
+    include: [Choice],
+  };
+
+  // [
+  //   'decisions',
+  //   'decisions.choices',
+  //   'steps',
+  // ];
 
   async getLensWizards(): Promise<LensWizard[]> {
-    return await this.lensWizardRepo.find({
-      // relations: ['decisions', 'decisions.choices'],
-    });
+    return await this.lensWizardRepo.findAll(this.lensWizardOption);
   }
 
   async findLensWizard(id: number, options: any = {}): Promise<any> {
-    const steps = await this.stepRepo.find({ where: { wizardId: id } });
+    const steps = await this.stepRepo.findAll({ where: { wizardId: id } });
 
-    const stepTree = buildTree(steps)
+    const stepTree = buildTree(steps);
     console.warn(stepTree);
 
-    const lensWizard = await this.lensWizardRepo.findOne(id, {
-      relations: this.lensWizardRelations,
-      ...options,
-    });
+    // const lensWizard = await this.lensWizardRepo.findOne(id, {
+    //   relations: this.lensWizardRelations,
+    //   ...options,
+    // });
 
-    if(!lensWizard.id) return {};
+    const lensWizard = await this.lensWizardRepo.findByPk(id);
+    if (!lensWizard.id) return {};
 
     return {
       ...lensWizard,
@@ -56,7 +58,7 @@ export class LensWizardService {
   }
 
   async createLensWizard(entity: CreateLensWizardDto): Promise<any> {
-    return await this.lensWizardRepo.save(entity);
+    return await this.lensWizardRepo.create(entity);
   }
 
   async updateLensWizard(id, updatingQuery: any): Promise<any> {
@@ -66,24 +68,19 @@ export class LensWizardService {
     //   wizardId: '1',
     //   choiceId: '1',
     // });
-
     // const step2 = this.stepRepo.create({
     //   name: '22',
     //   wizardId: '1',
     //   choiceId: '2',
     //   parentId: step1.id,
     // });
-
     // this.stepRepo.save([step1, step2]);
-
     // return await this.lensWizardRepo.update(entity.id, entity);
-
     // const rootStep = new Step();
     // rootStep.choiceId = 1;
     // rootStep.wizardId = 1;
     // rootStep.name = '111';
     // const res = await this.stepRepo.save(rootStep);
-
     // const nextUpdateQuery = {
     //   ...updatingQuery,
     //   steps: [rootStep]
@@ -96,35 +93,26 @@ export class LensWizardService {
     // );
   }
 
-  async deleteLensWizard(id): Promise<DeleteResult> {
-    return await this.lensWizardRepo.delete(id);
+  async deleteLensWizard(id): Promise<any> {
+    return await this.lensWizardRepo.destroy(id);
   }
 
   async getDecisions({ wizardId }): Promise<Decision[]> {
-    return await this.decisionRepo.find({
-      relations: ['choices'],
-    });
+    return await this.decisionRepo.findAll({ include: Choice });
   }
 
-  async findDecision(id, options: FindOneOptions = {}): Promise<Decision> {
-    return await this.decisionRepo.findOne(id, {
-      relations: ['choices'],
-    });
+  async findDecision(id, options: any): Promise<any> {
+    // return await this.decisionRepo.findOne(id, {
+    //   relations: ['choices'],
+    // });
   }
 
   async createDecision({ wizardId, createDto }): Promise<Decision> {
     const savingQuery = { ...createDto, wizardId };
-    return await this.decisionRepo.save(savingQuery);
+    return await this.decisionRepo.create(savingQuery, { include: Choice });
   }
 
   async updateDecision(id, updatingQuery: any): Promise<any> {
-    // const decision = await this.findDecision(id);
-    // const nextDecision = {
-    //   ...decision,
-    //   ...updatingQuery,
-    // }
-    // console.warn(id, decision, nextDecision)
-    // return await this.decisionRepo.save(nextDecision);
     const relations = ['choices'];
     return updateCascadeDB(this.decisionRepo, id, updatingQuery, relations);
   }

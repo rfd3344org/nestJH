@@ -7,13 +7,8 @@ import {
   Body,
   Param,
 } from '@nestjs/common';
-import {
-  ApiOperation,
-  ApiTags,
-  ApiQuery,
-  ApiHeader,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiParam } from '@nestjs/swagger';
+
 import { DogService } from './dog.service';
 import { Dog } from './dog.model';
 import { CreateDogDto } from './dog.dto';

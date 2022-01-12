@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { LensWizard, Decision, Step } from './lensWizard.entity';
+import { SequelizeModule } from '@nestjs/sequelize';
+
+import { LensWizard, Decision, Choice, Step } from './lensWizard.model';
 import { LensWizardService } from './lensWizard.service';
 import { LensWizardController } from './lensWizard.controller';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([LensWizard, Decision, Step]),
-  ],
+  imports: [SequelizeModule.forFeature([LensWizard, Decision, Choice, Step])],
   providers: [LensWizardService],
   controllers: [LensWizardController],
 })

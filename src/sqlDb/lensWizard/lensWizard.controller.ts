@@ -7,15 +7,10 @@ import {
   Body,
   Param,
 } from '@nestjs/common';
-import {
-  ApiOperation,
-  ApiTags,
-  ApiQuery,
-  ApiHeader,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiParam } from '@nestjs/swagger';
+
 import { LensWizardService } from './lensWizard.service';
-import { LensWizard } from './lensWizard.entity';
+import { LensWizard } from './lensWizard.model';
 import { CreateLensWizardDto, CreateDecisionDto } from './lensWizard.dto';
 
 @Controller('LensWizard')
@@ -24,7 +19,7 @@ export class LensWizardController {
   constructor(private service: LensWizardService) {}
 
   @Get()
-  index(): Promise<LensWizard[]> {
+  getAll(): Promise<LensWizard[]> {
     return this.service.getLensWizards();
   }
 
