@@ -1,7 +1,19 @@
 'use strict';
 
-const DB_NAME = 'lens_wizard';
+const DB_NAME = 'step';
 const getColumns = (Sequelize) => ({
+  wizard_id: {
+    type: Sequelize.STRING,
+  },
+  choice_id: {
+    type: Sequelize.STRING,
+  },
+  parent_id: {
+    type: Sequelize.STRING,
+  },
+  disabled: {
+    type: Sequelize.BOOLEAN,
+  },
   id: {
     allowNull: false,
     primaryKey: true,
@@ -18,20 +30,44 @@ const getColumns = (Sequelize) => ({
     allowNull: false,
     type: Sequelize.DATE,
   },
-
 });
 const getSeeds = () => [
   {
     id: 1,
-    name: 'lens_wizard1',
+    name: 'decision1',
     created_at: new Date(),
     updated_at: new Date(),
+    wizard_id: 1,
+    choice_id: 1,
   },
   {
+    disabled: true,
     id: 2,
-    name: 'lens_wizard2',
+    name: 'decision2',
     created_at: new Date(),
     updated_at: new Date(),
+    wizard_id: 1,
+    choice_id: 2,
+    parent_id: 1,
+    disabled: true,
+  },
+  {
+    id: 3,
+    name: 'decision3',
+    created_at: new Date(),
+    updated_at: new Date(),
+    wizard_id: 1,
+    choice_id: 2,
+    parent_id: 2,
+  },
+  {
+    id: 4,
+    name: 'decision4',
+    created_at: new Date(),
+    updated_at: new Date(),
+    wizard_id: 1,
+    choice_id: 2,
+    parent_id: 3,
   },
 ];
 

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import * as _ from 'lodash';
+import { v4 as uuid } from 'uuid';
 
 import { updateCascadeDB } from '@/utils/orm.utils';
-import { buildTree } from '@/utils/array.utils';
+import { buildTree, flattenTree } from '@/utils/array.utils';
 
 import { LensWizard, Decision, Choice, Step } from './lensWizard.model';
 import { CreateLensWizardDto } from './lensWizard.dto';
@@ -20,61 +21,60 @@ export class LensWizardService {
   ) {}
 
   private readonly lensWizardOption = {
-    include: [{model: Decision, include: [Choice]}, Step],
-    // include: { all: true},
+    include: [{ model: Decision, include: [Choice] }, { model: Step, include: [Step] } ],
   };
   private readonly decisionOption = {
     include: [Choice],
   };
 
-  // [
-  //   'decisions',
-  //   'decisions.choices',
-  //   'steps',
-  // ];
-
-  async getLensWizards(): Promise<LensWizard[]> {
+  async all(): Promise<LensWizard[]> {
     return await this.lensWizardRepo.findAll(this.lensWizardOption);
   }
 
-  async findLensWizard(id: number, options: any = {}): Promise<any> {
-    const steps = await this.stepRepo.findAll({ where: { wizardId: id } });
+  async findById(id: number): Promise<any> {
+    // const steps = await this.stepRepo.findAll({ where: { wizardId: id } });
 
-    const stepTree = buildTree(steps);
-    console.warn(stepTree);
+    // const stepTree = buildTree(steps);
+    // console.warn(stepTree);
 
     // const lensWizard = await this.lensWizardRepo.findOne(id, {
     //   relations: this.lensWizardRelations,
     //   ...options,
     // });
 
-    const lensWizard = await this.lensWizardRepo.findByPk(id);
+    // return {
+    //   ...lensWizard,
+    //   steps: stepTree,
+    // };
+
+    const lensWizard = await this.lensWizardRepo.findByPk(
+      id,
+      this.lensWizardOption,
+    );
     if (!lensWizard.id) return {};
 
-    return {
-      ...lensWizard,
-      steps: stepTree,
-    };
+    return lensWizard;
   }
 
-  async createLensWizard(entity: CreateLensWizardDto): Promise<any> {
-    return await this.lensWizardRepo.create(entity);
+  async create(record: CreateLensWizardDto): Promise<any> {
+    return await this.lensWizardRepo.create(record);
   }
 
-  async updateLensWizard(id, updatingQuery: any): Promise<any> {
-    // const step1 = this.stepRepo.create({
-    //   id: '1231232',
-    //   name: '11',
-    //   wizardId: '1',
-    //   choiceId: '1',
+  async update(id, record: any): Promise<any> {
+    const steps = record.steps;
+    const stepsFlatten = flattenTree(steps);
+
+    console.warn('stepsFlatten', stepsFlatten);
+    // const stepCreateRes = await this.stepRepo.bulkCreate(stepsFlatten, {
+    //   updateOnDuplicate: [
+    //     'name',
+    //     'wizardId',
+    //     'choiceId',
+    //     'parentId',
+    //     'updatedAt',
+    //   ],
     // });
-    // const step2 = this.stepRepo.create({
-    //   name: '22',
-    //   wizardId: '1',
-    //   choiceId: '2',
-    //   parentId: step1.id,
-    // });
-    // this.stepRepo.save([step1, step2]);
+
     // return await this.lensWizardRepo.update(entity.id, entity);
     // const rootStep = new Step();
     // rootStep.choiceId = 1;
@@ -93,7 +93,7 @@ export class LensWizardService {
     // );
   }
 
-  async deleteLensWizard(id): Promise<any> {
+  async delete(id): Promise<any> {
     return await this.lensWizardRepo.destroy(id);
   }
 

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { UpdateResult, DeleteResult } from 'typeorm';
 import { Dog } from './dog.model';
 import { CreateDogDto } from './dog.dto';
 
@@ -11,22 +10,19 @@ export class DogService {
     private dogModel: typeof Dog,
   ) {}
 
-  async findAll(): Promise<Dog[]> {
+  async all(): Promise<Dog[]> {
     return await this.dogModel.findAll();
   }
 
   async create(model: CreateDogDto): Promise<any> {
-    const res = await this.dogModel.create(model);
-    return res[0];
+    return await this.dogModel.create(model);
   }
 
   async update(model: any): Promise<any> {
-    const res = await this.dogModel.upsert(model);
-    return res[0];
+    return await this.dogModel.upsert(model);
   }
 
-  async delete(id): Promise<DeleteResult> {
-    const res = await this.dogModel.destroy(id);
-    return;
+  async delete(id): Promise<any> {
+    return await this.dogModel.destroy({ where: { id } });
   }
 }

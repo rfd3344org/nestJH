@@ -1,4 +1,11 @@
-import { Table, Column, ForeignKey, HasMany, BelongsTo } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  ForeignKey,
+  HasMany,
+  BelongsTo,
+  Default,
+} from 'sequelize-typescript';
 import { BaseModel } from '@/utils/orm.utils';
 
 @Table({ tableName: 'lens_wizard' })
@@ -12,9 +19,9 @@ export class LensWizard extends BaseModel {
 
 @Table({ tableName: 'decision' })
 export class Decision extends BaseModel {
-  @ForeignKey(()=> LensWizard)
+  @ForeignKey(() => LensWizard)
   @Column
-  wizardId: number;
+  wizardId: string;
 
   @BelongsTo(() => LensWizard)
   wizard: LensWizard;
@@ -25,9 +32,9 @@ export class Decision extends BaseModel {
 
 @Table({ tableName: 'choice' })
 export class Choice extends BaseModel {
-  @ForeignKey(()=> Decision)
+  @ForeignKey(() => Decision)
   @Column
-  decisionId: number;
+  decisionId: string;
 
   @BelongsTo(() => Decision)
   decision: Decision;
@@ -35,26 +42,28 @@ export class Choice extends BaseModel {
 
 @Table({ tableName: 'step' })
 export class Step extends BaseModel {
-  @ForeignKey(()=> LensWizard)
+  @ForeignKey(() => LensWizard)
   @Column
-  wizardId: number;
+  wizardId: string;
 
   @BelongsTo(() => LensWizard)
   wizard: LensWizard;
 
-  @ForeignKey(()=> Choice)
+  @ForeignKey(() => Choice)
   @Column
-  choiceId: number;
+  choiceId: string;
 
   @BelongsTo(() => Choice)
   choice: Choice;
 
-  @Column
-  // ({ nullable: true })
-  parentId: number;
+  @ForeignKey(() => Step)
+  @Column({ allowNull: true })
+  parentId: string;
 
+  @HasMany(() => Step)
+  children: Step;
 
+  @Default(false)
   @Column
-  // ({ default: false })
   disabled: boolean;
 }

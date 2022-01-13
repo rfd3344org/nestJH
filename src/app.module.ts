@@ -19,9 +19,9 @@ import { AppController } from './app.controller';
     MailModule,
     TasksModule,
     AuthModule,
+
     SqlDbModule,
     MongoModule,
-
     // todo: use configService create service folder
     ClientsModule.register([
       {

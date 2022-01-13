@@ -20,33 +20,32 @@ export class LensWizardController {
 
   @Get()
   getAll(): Promise<LensWizard[]> {
-    return this.service.getLensWizards();
+    return this.service.all();
   }
 
   @Get(':id')
   @ApiParam({ name: 'id' })
   async getById(@Param('id') id): Promise<any> {
-    return this.service.findLensWizard(id);
+    return this.service.findById(id);
   }
 
   @Post()
   async create(@Body() body: CreateLensWizardDto): Promise<any> {
-    return this.service.createLensWizard(body);
+    return this.service.create(body);
   }
 
   @Patch(':id')
   @ApiParam({ name: 'id' })
-  async updateWizard(
+  async update(
     @Param('id') id,
-    @Body() entityData: LensWizard,
+    @Body() record: LensWizard,
   ): Promise<any> {
-    entityData.id = id;
-    return this.service.updateLensWizard(id, entityData);
+    return this.service.update(id, record);
   }
 
   @Delete(':id')
   async delete(@Param('id') id): Promise<any> {
-    return this.service.deleteLensWizard(id);
+    return this.service.delete(id);
   }
 
   @Get(':wizardId/decision')

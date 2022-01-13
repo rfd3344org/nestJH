@@ -1,7 +1,10 @@
 'use strict';
 
-const DB_NAME = 'lens_wizard';
+const DB_NAME = 'choice';
 const getColumns = (Sequelize) => ({
+  decision_id: {
+    type: Sequelize.STRING,
+  },
   id: {
     allowNull: false,
     primaryKey: true,
@@ -23,15 +26,17 @@ const getColumns = (Sequelize) => ({
 const getSeeds = () => [
   {
     id: 1,
-    name: 'lens_wizard1',
+    name: 'choice1',
     created_at: new Date(),
     updated_at: new Date(),
+    decision_id: 1,
   },
   {
     id: 2,
-    name: 'lens_wizard2',
+    name: 'choice2',
     created_at: new Date(),
     updated_at: new Date(),
+    decision_id: 1,
   },
 ];
 

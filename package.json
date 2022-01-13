@@ -5,13 +5,12 @@
   "description": "Nest TypeScript starter repository",
   "license": "MIT",
   "scripts": {
-    "demo": "npx typeorm migration:create -n lensWizard",
-    "sql-init": "sequelize-cli db:migrate ",
+    "dev": "npm run start:dev",
+    "migrate": "sequelize-cli db:migrate",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "dev": "npm run start:dev",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -35,7 +34,6 @@
     "@nestjs/schedule": "^1.0.1",
     "@nestjs/sequelize": "^8.0.0",
     "@nestjs/swagger": "^5.0.9",
-    "@nestjs/typeorm": "^8.0.2",
     "bcrypt": "^5.0.1",
     "cache-manager": "^3.4.4",
     "handlebars": "^4.7.7",
@@ -54,7 +52,7 @@
     "sequelize-typescript": "^2.1.2",
     "sqlite3": "^5.0.2",
     "swagger-ui-express": "^4.1.6",
-    "typeorm": "^0.2.41"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.1.1",

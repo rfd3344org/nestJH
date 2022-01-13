@@ -22,7 +22,7 @@ export const buildTree = (list, parentId = 'parentId') => {
 };
 
 
-const flattenTree = (root = {}, children='children') => {
+export const flattenTree = (root = {}, children='children') => {
   let flatten = [Object.assign({}, root)];
   delete flatten[0][children];
 

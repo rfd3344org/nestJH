@@ -20,7 +20,7 @@ export class DogController {
 
   @Get()
   index(): Promise<Dog[]> {
-    return this.service.findAll();
+    return this.service.all();
   }
 
   @Post()
@@ -35,6 +35,7 @@ export class DogController {
   }
 
   @Delete(':id')
+  @ApiParam({ name: 'id' })
   async delete(@Param('id') id): Promise<any> {
     return this.service.delete(id);
   }
