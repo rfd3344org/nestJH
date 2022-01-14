@@ -15,6 +15,20 @@ export class LensWizard extends BaseModel {
 
   @HasMany(() => Step)
   steps: Step[];
+
+
+  // @HasMany(() => Step)
+  // get steps(): any {
+  //   console.warn('steps')
+  //   const steps = this.getDataValue('steps');
+  //   return [steps[0]];
+  //   // console.warn(this.get('steps'));
+  //   // return 'My name is '
+  // }
+  // set steps(value: any) {
+  //   console.warn('value', value)
+  //   this.setDataValue('aaa', value);
+  // }
 }
 
 @Table({ tableName: 'decision' })
@@ -60,8 +74,6 @@ export class Step extends BaseModel {
   @Column({ allowNull: true })
   parentId: string;
 
-  @HasMany(() => Step)
-  children: Step;
 
   @Default(false)
   @Column

@@ -21,37 +21,28 @@ export class LensWizardService {
   ) {}
 
   private readonly lensWizardOption = {
-    include: [{ model: Decision, include: [Choice] }, { model: Step, include: [Step] } ],
+    include: [{ model: Decision, include: [Choice] }, Step],
+    // raw: true,
   };
   private readonly decisionOption = {
     include: [Choice],
   };
 
   async all(): Promise<LensWizard[]> {
-    return await this.lensWizardRepo.findAll(this.lensWizardOption);
+    return await this.lensWizardRepo.findAll();
   }
 
   async findById(id: number): Promise<any> {
-    // const steps = await this.stepRepo.findAll({ where: { wizardId: id } });
-
-    // const stepTree = buildTree(steps);
-    // console.warn(stepTree);
-
-    // const lensWizard = await this.lensWizardRepo.findOne(id, {
-    //   relations: this.lensWizardRelations,
-    //   ...options,
-    // });
-
-    // return {
-    //   ...lensWizard,
-    //   steps: stepTree,
-    // };
-
     const lensWizard = await this.lensWizardRepo.findByPk(
       id,
       this.lensWizardOption,
     );
     if (!lensWizard.id) return {};
+
+    const steps = lensWizard.get('steps', { plain: true });
+    const nextSteps = buildTree(steps, 'parentId', 'next');
+    lensWizard.setDataValue('stepsTree', nextSteps);
+    lensWizard.setDataValue('steps', undefined);
 
     return lensWizard;
   }
@@ -61,21 +52,21 @@ export class LensWizardService {
   }
 
   async update(id, record: any): Promise<any> {
-    const steps = record.steps;
-    const stepsFlatten = flattenTree(steps);
+    const stepsTree = record.stepsTree;
+    const stepsFlatten = flattenTree(stepsTree, 'next');
 
-    console.warn('stepsFlatten', stepsFlatten);
-    // const stepCreateRes = await this.stepRepo.bulkCreate(stepsFlatten, {
-    //   updateOnDuplicate: [
-    //     'name',
-    //     'wizardId',
-    //     'choiceId',
-    //     'parentId',
-    //     'updatedAt',
-    //   ],
+    const updateRecord = {
+      // ...record,
+      id,
+      steps: stepsFlatten,
+    };
+    return await this.lensWizardRepo.upsert(updateRecord, {
+      // where: { id },
+      returning: true,
+    });
+    // return await this.lensWizardRepo.bulkCreate([updateRecord], {
+    //   updateOnDuplicate: ['name', 'steps', 'decisions', 'updatedAt']
     // });
-
-    // return await this.lensWizardRepo.update(entity.id, entity);
     // const rootStep = new Step();
     // rootStep.choiceId = 1;
     // rootStep.wizardId = 1;

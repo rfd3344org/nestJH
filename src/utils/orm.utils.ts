@@ -11,7 +11,7 @@ import {
 
 @Table({ underscored: true })
 export abstract class BaseModel extends Model {
-  @IsUUID(4)
+  // @IsUUID(4)
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column
@@ -19,6 +19,7 @@ export abstract class BaseModel extends Model {
 
   @Column
   name: string;
+
 }
 
 export const updateCascadeDB = async (
