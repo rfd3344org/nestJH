@@ -64,24 +64,6 @@ export class LensWizardService {
       // where: { id },
       returning: true,
     });
-    // return await this.lensWizardRepo.bulkCreate([updateRecord], {
-    //   updateOnDuplicate: ['name', 'steps', 'decisions', 'updatedAt']
-    // });
-    // const rootStep = new Step();
-    // rootStep.choiceId = 1;
-    // rootStep.wizardId = 1;
-    // rootStep.name = '111';
-    // const res = await this.stepRepo.save(rootStep);
-    // const nextUpdateQuery = {
-    //   ...updatingQuery,
-    //   steps: [rootStep]
-    // };
-    // return updateCascadeDB(
-    //   this.lensWizardRepo,
-    //   id,
-    //   updatingQuery,
-    //   this.lensWizardRelations,
-    // );
   }
 
   async delete(id): Promise<any> {
@@ -89,13 +71,10 @@ export class LensWizardService {
   }
 
   async getDecisions({ wizardId }): Promise<Decision[]> {
-    return await this.decisionRepo.findAll({ include: Choice });
-  }
-
-  async findDecision(id, options: any): Promise<any> {
-    // return await this.decisionRepo.findOne(id, {
-    //   relations: ['choices'],
-    // });
+    return await this.decisionRepo.findAll({
+      where: { wizardId },
+      ...this.decisionOption,
+    });
   }
 
   async createDecision({ wizardId, createDto }): Promise<Decision> {
@@ -103,8 +82,24 @@ export class LensWizardService {
     return await this.decisionRepo.create(savingQuery, { include: Choice });
   }
 
-  async updateDecision(id, updatingQuery: any): Promise<any> {
-    const relations = ['choices'];
-    return updateCascadeDB(this.decisionRepo, id, updatingQuery, relations);
+  async updateDecision(id, record: any): Promise<any> {
+    const queryRecord = {
+      // id,
+      ...record,
+    };
+    console.warn('queryRecord', queryRecord)
+
+    return await this.decisionRepo.create(queryRecord, {
+      include: Choice,
+      // isNewRecord: false,
+    });
+
+    return await this.decisionRepo.upsert(queryRecord, {
+      // where: { id },
+    });
+  }
+
+  async deleteDecision(id): Promise<any> {
+    return this.decisionRepo.destroy({ where: { id } });
   }
 }

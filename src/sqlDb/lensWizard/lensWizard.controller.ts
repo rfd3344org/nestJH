@@ -72,4 +72,13 @@ export class LensWizardController {
   ): Promise<any> {
     return this.service.updateDecision(id, body);
   }
+
+  @Delete(':wizardId/decision/:id')
+  @ApiParam({ name: 'wizardId', example: '1' })
+  @ApiParam({ name: 'id', example: '1' })
+  async deleteDecision(
+    @Param('id') id,
+  ): Promise<any> {
+    return this.service.deleteDecision(id);
+  }
 }

@@ -11,7 +11,7 @@ import {
 
 @Table({ underscored: true })
 export abstract class BaseModel extends Model {
-  // @IsUUID(4)
+
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column
