@@ -1,5 +1,8 @@
+import * as _ from 'lodash';
+
+
 export const buildTree = (
-  list,
+  treeItems,
   parentId = 'parentId',
   children = 'children',
 ) => {
@@ -7,6 +10,9 @@ export const buildTree = (
     node,
     roots = [],
     i;
+
+
+  const list = _.cloneDeep(treeItems);
 
   for (i = 0; i < list.length; i += 1) {
     map[list[i].id] = i; // initialize the map

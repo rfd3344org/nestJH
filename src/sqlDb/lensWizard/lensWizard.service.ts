@@ -16,14 +16,16 @@ export class LensWizardService {
     private lensWizardRepo: typeof LensWizard,
     @InjectModel(Decision)
     private decisionRepo: typeof Decision,
+    @InjectModel(Decision)
+    private choiceRepo: typeof Choice,
     @InjectModel(Step)
     private stepRepo: typeof Step,
   ) {}
 
   private readonly lensWizardOption = {
     include: [{ model: Decision, include: [Choice] }, Step],
-    // raw: true,
   };
+
   private readonly decisionOption = {
     include: [Choice],
   };
@@ -37,12 +39,12 @@ export class LensWizardService {
       id,
       this.lensWizardOption,
     );
-    if (!lensWizard.id) return {};
+
+    if (!lensWizard?.id) return {};
 
     const steps = lensWizard.get('steps', { plain: true });
     const nextSteps = buildTree(steps, 'parentId', 'next');
-    lensWizard.setDataValue('stepsTree', nextSteps);
-    lensWizard.setDataValue('steps', undefined);
+    lensWizard.set('steps', nextSteps, { reset: true, raw: true });
 
     return lensWizard;
   }
@@ -70,6 +72,7 @@ export class LensWizardService {
     return await this.lensWizardRepo.destroy(id);
   }
 
+  // decision APIs
   async getDecisions({ wizardId }): Promise<Decision[]> {
     return await this.decisionRepo.findAll({
       where: { wizardId },
@@ -77,26 +80,19 @@ export class LensWizardService {
     });
   }
 
-  async createDecision({ wizardId, createDto }): Promise<Decision> {
-    const savingQuery = { ...createDto, wizardId };
-    return await this.decisionRepo.create(savingQuery, { include: Choice });
+  async createDecision(wizardId: string, record: any): Promise<Decision> {
+    const createQ = { wizardId, ...record };
+    return await this.decisionRepo.create(createQ, { include: Choice });
   }
 
-  async updateDecision(id, record: any): Promise<any> {
-    const queryRecord = {
-      // id,
+  async updateDecision(id: string, record: any): Promise<any> {
+    const updateQ = {
+
       ...record,
     };
-    console.warn('queryRecord', queryRecord)
+    console.warn('queryRecord', id, record);
 
-    return await this.decisionRepo.create(queryRecord, {
-      include: Choice,
-      // isNewRecord: false,
-    });
-
-    return await this.decisionRepo.upsert(queryRecord, {
-      // where: { id },
-    });
+    return await this.decisionRepo.update(updateQ, { where: { id } });
   }
 
   async deleteDecision(id): Promise<any> {

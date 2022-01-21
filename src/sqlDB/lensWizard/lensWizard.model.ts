@@ -16,19 +16,6 @@ export class LensWizard extends BaseModel {
   @HasMany(() => Step)
   steps: Step[];
 
-
-  // @HasMany(() => Step)
-  // get steps(): any {
-  //   console.warn('steps')
-  //   const steps = this.getDataValue('steps');
-  //   return [steps[0]];
-  //   // console.warn(this.get('steps'));
-  //   // return 'My name is '
-  // }
-  // set steps(value: any) {
-  //   console.warn('value', value)
-  //   this.setDataValue('aaa', value);
-  // }
 }
 
 @Table({ tableName: 'decision' })
@@ -37,8 +24,8 @@ export class Decision extends BaseModel {
   @Column
   wizardId: string;
 
-  @BelongsTo(() => LensWizard)
-  wizard: LensWizard;
+  // @BelongsTo(() => LensWizard)
+  // wizard: LensWizard;
 
   @HasMany(() => Choice)
   choices: Choice[];
@@ -50,8 +37,8 @@ export class Choice extends BaseModel {
   @Column
   decisionId: string;
 
-  @BelongsTo(() => Decision)
-  decision: Decision;
+  // @BelongsTo(() => Decision)
+  // decision: Decision;
 }
 
 @Table({ tableName: 'step' })
@@ -60,22 +47,22 @@ export class Step extends BaseModel {
   @Column
   wizardId: string;
 
-  @BelongsTo(() => LensWizard)
-  wizard: LensWizard;
+  // @BelongsTo(() => LensWizard)
+  // wizard: LensWizard;
 
   @ForeignKey(() => Choice)
   @Column
   choiceId: string;
 
-  @BelongsTo(() => Choice)
-  choice: Choice;
+  // @BelongsTo(() => Choice)
+  // choice: Choice;
 
   @ForeignKey(() => Step)
   @Column({ allowNull: true })
   parentId: string;
 
-
   @Default(false)
   @Column
   disabled: boolean;
+
 }
