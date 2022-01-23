@@ -3,8 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import * as _ from 'lodash';
 import { v4 as uuid } from 'uuid';
 
-import { updateCascadeDB } from '@/utils/orm.utils';
-import { buildTree, flattenTree } from '@/utils/array.utils';
+import { recursive, buildTree, flattenTree } from '@/utils/array.utils';
 
 import { LensWizard, Decision, Choice, Step } from './lensWizard.model';
 import { CreateLensWizardDto } from './lensWizard.dto';
@@ -16,7 +15,7 @@ export class LensWizardService {
     private lensWizardRepo: typeof LensWizard,
     @InjectModel(Decision)
     private decisionRepo: typeof Decision,
-    @InjectModel(Decision)
+    @InjectModel(Choice)
     private choiceRepo: typeof Choice,
     @InjectModel(Step)
     private stepRepo: typeof Step,
@@ -34,13 +33,12 @@ export class LensWizardService {
     return await this.lensWizardRepo.findAll();
   }
 
-  async findById(id: number): Promise<any> {
+  async findByPk(id: string): Promise<any> {
     const lensWizard = await this.lensWizardRepo.findByPk(
       id,
       this.lensWizardOption,
     );
-
-    if (!lensWizard?.id) return {};
+    if (!lensWizard) return lensWizard;
 
     const steps = lensWizard.get('steps', { plain: true });
     const nextSteps = buildTree(steps, 'parentId', 'next');
@@ -53,19 +51,31 @@ export class LensWizardService {
     return await this.lensWizardRepo.create(record);
   }
 
-  async update(id, record: any): Promise<any> {
-    const stepsTree = record.stepsTree;
-    const stepsFlatten = flattenTree(stepsTree, 'next');
+  async update(id: string, record: any): Promise<any> {
+    const { steps, ...updateQ } = record;
 
-    const updateRecord = {
-      // ...record,
-      id,
-      steps: stepsFlatten,
-    };
-    return await this.lensWizardRepo.upsert(updateRecord, {
-      // where: { id },
-      returning: true,
+    recursive(steps, 'next', (item) => {
+      console.warn(item)
+    })
+    return
+    const stepsArr = flattenTree(steps, 'next');
+
+    // update steps records
+    const stepsAll = await this.stepRepo.findAll({
+      where: { wizardId: id },
     });
+    const steps2Delete = _.differenceBy(stepsAll, stepsArr, 'id');
+    await this.stepRepo.destroy({
+      where: { id: _.map(steps2Delete, 'id') },
+    });
+    await this.stepRepo.bulkCreate(stepsArr, {
+      updateOnDuplicate: ['name', 'choiceId', 'disabled', 'updatedAt'],
+    });
+
+    await this.decisionRepo.update(updateQ, {
+      where: { id },
+    });
+    return true;
   }
 
   async delete(id): Promise<any> {
@@ -86,13 +96,24 @@ export class LensWizardService {
   }
 
   async updateDecision(id: string, record: any): Promise<any> {
-    const updateQ = {
+    const { choices, ...updateQ } = record;
 
-      ...record,
-    };
-    console.warn('queryRecord', id, record);
+    // update choices records
+    const choicesAll = await this.choiceRepo.findAll({
+      where: { decisionId: id },
+    });
+    const choices2Delete = _.differenceBy(choicesAll, choices, 'id');
+    await this.choiceRepo.destroy({
+      where: { id: _.map(choices2Delete, 'id') },
+    });
+    await this.choiceRepo.bulkCreate(choices, {
+      updateOnDuplicate: ['name', 'updatedAt'],
+    });
 
-    return await this.decisionRepo.update(updateQ, { where: { id } });
+    await this.decisionRepo.update(updateQ, {
+      where: { id },
+    });
+    return true;
   }
 
   async deleteDecision(id): Promise<any> {

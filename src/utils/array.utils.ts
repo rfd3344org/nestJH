@@ -1,5 +1,21 @@
 import * as _ from 'lodash';
 
+export const recursive = (
+  arr = [],
+  recursiveKey = '',
+  callbackFn = (item) => {},
+) => {
+  for (let item of arr) {
+    callbackFn(_.cloneDeep(item));
+
+    const children = item[recursiveKey];
+    if (!children || children.length === 0) {
+      continue;
+    }
+
+    recursive(children, recursiveKey, callbackFn);
+  }
+};
 
 export const buildTree = (
   treeItems,
@@ -10,7 +26,6 @@ export const buildTree = (
     node,
     roots = [],
     i;
-
 
   const list = _.cloneDeep(treeItems);
 
@@ -32,29 +47,41 @@ export const buildTree = (
 };
 
 export const flattenTree = (root = [], childField = 'children') => {
-  if(!root || root.length === 0) {
-    return root;
-  }
+  let tree = root;
+  if (_.isPlainObject(root)) tree = [root];
 
-  let res = root.map(item => {
-    const temp = { ...item };
-    delete temp[childField];
-    return temp;
+  let res = [];
+  recursive(tree, childField, (item) => {
+    delete item[childField];
+    res.push(item);
   });
-
-  for(let item of root) {
-    const itemClone = {...item};
-    const children = itemClone[childField];
-
-    if(!children || children.length === 0) {
-      continue;
-    }
-
-    res = [
-      ...res,
-      ...flattenTree(children, childField),
-    ]
-  }
-
   return res;
-}
+};
+
+// export const flattenTree = (root = [], childField = 'children') => {
+//   if(!root || root.length === 0) {
+//     return root;
+//   }
+
+//   let res = root.map(item => {
+//     const temp = { ...item };
+//     delete temp[childField];
+//     return temp;
+//   });
+
+//   for(let item of root) {
+//     const itemClone = {...item};
+//     const children = itemClone[childField];
+
+//     if(!children || children.length === 0) {
+//       continue;
+//     }
+
+//     res = [
+//       ...res,
+//       ...flattenTree(children, childField),
+//     ]
+//   }
+
+//   return res;
+// }

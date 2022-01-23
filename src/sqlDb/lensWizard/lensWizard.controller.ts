@@ -26,7 +26,7 @@ export class LensWizardController {
   @Get(':id')
   @ApiParam({ name: 'id' })
   async getById(@Param('id') id): Promise<any> {
-    return this.service.findById(id);
+    return this.service.findByPk(id);
   }
 
   @Post()

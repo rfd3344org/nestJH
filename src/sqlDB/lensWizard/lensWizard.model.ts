@@ -10,12 +10,11 @@ import { BaseModel } from '@/utils/orm.utils';
 
 @Table({ tableName: 'lens_wizard' })
 export class LensWizard extends BaseModel {
-  @HasMany((type) => Decision)
+  @HasMany(() => Decision)
   decisions: Decision[];
 
   @HasMany(() => Step)
   steps: Step[];
-
 }
 
 @Table({ tableName: 'decision' })
@@ -24,21 +23,16 @@ export class Decision extends BaseModel {
   @Column
   wizardId: string;
 
-  // @BelongsTo(() => LensWizard)
-  // wizard: LensWizard;
-
   @HasMany(() => Choice)
   choices: Choice[];
 }
 
 @Table({ tableName: 'choice' })
 export class Choice extends BaseModel {
+
   @ForeignKey(() => Decision)
   @Column
   decisionId: string;
-
-  // @BelongsTo(() => Decision)
-  // decision: Decision;
 }
 
 @Table({ tableName: 'step' })
@@ -47,15 +41,9 @@ export class Step extends BaseModel {
   @Column
   wizardId: string;
 
-  // @BelongsTo(() => LensWizard)
-  // wizard: LensWizard;
-
   @ForeignKey(() => Choice)
   @Column
   choiceId: string;
-
-  // @BelongsTo(() => Choice)
-  // choice: Choice;
 
   @ForeignKey(() => Step)
   @Column({ allowNull: true })
@@ -64,5 +52,4 @@ export class Step extends BaseModel {
   @Default(false)
   @Column
   disabled: boolean;
-
 }
