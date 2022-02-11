@@ -6,7 +6,7 @@ import { AppConfigModule } from './config/appConfig.module';
 import { TasksModule } from './job/tasks/tasks.module';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
-import { SqlDbModule } from './sqlDb/SqlDbModule';
+import { SqlDbModule } from './sequelize/SqlDbModule';
 import { MongoModule } from './mongoDB/MongoModule';
 
 import { AppController } from './app.controller';

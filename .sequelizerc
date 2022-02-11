@@ -1,7 +1,7 @@
 // .sequelizerc
 
 const path = require('path');
-const sequelizeCliPath = 'src/sqlDb/sequelizeCli';
+const sequelizeCliPath = 'src/sequelize/sequelizeCli';
 
 module.exports = {
   env: 'development',
