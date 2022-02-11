@@ -13,5 +13,4 @@ export class Person extends BaseModel {
   @Column
   address: string;
 
-
 }
