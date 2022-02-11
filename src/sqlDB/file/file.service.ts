@@ -1,47 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectModel } from '@nestjs/sequelize';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Repository } from 'typeorm';
-import { UpdateResult, DeleteResult } from 'typeorm';
+// import { Repository } from 'typeorm';
+// import { UpdateResult, DeleteResult } from 'typeorm';
 
 import * as _ from 'lodash';
 import { createWriteStream } from 'fs';
 import { v4 as uuid } from 'uuid';
 
-import { File } from './file.entity';
+import { File } from './file.model';
 import { AppConfigService } from '@/config/appConfig.service';
 import { CreateFileDto } from './file.dto';
-
 
 @Injectable()
 export class FileService {
   constructor(
-    @InjectRepository(File)
-    private entityRepository: Repository<File>,
+    @InjectModel(File)
+    private entityRepository: typeof File,
     private configService: AppConfigService,
   ) {}
 
-  async findAll(): Promise<File[]> {
-    return await this.entityRepository.find();
+  async findAll(): Promise<any> {
+    return await this.entityRepository.findAll();
   }
 
-  async create(filePath: CreateFileDto): Promise<File> {
+  async create(filePath: any): Promise<File> {
     console.warn({
       created_utc: Date.now(),
-      ...filePath
-    })
-    return await this.entityRepository.save({
+      ...filePath,
+    });
+    return await this.entityRepository.create({
       created_utc: Date.now(),
-      ...filePath
+      ...filePath,
     });
   }
 
-  async update(entity: File): Promise<UpdateResult> {
-    return await this.entityRepository.update(entity.id, entity);
+  async update(entity: any): Promise<any> {
+    return await this.entityRepository.upsert(entity);
   }
 
-  async delete(id: string): Promise<DeleteResult> {
-    return await this.entityRepository.delete(id);
+  async delete(id: string): Promise<any> {
+    return await this.entityRepository.destroy({ where: { id } });
   }
 
   async saveFile(file: Express.Multer.File) {
@@ -52,10 +51,7 @@ export class FileService {
     });
   }
 
-  async saveFile2Local(
-    buffer: Buffer,
-    originalName: string,
-  ): Promise<any> {
+  async saveFile2Local(buffer: Buffer, originalName: string): Promise<any> {
     const fileFolder = this.configService.get('FILE_PATH');
 
     const filename = `${uuid()}_${originalName}`;

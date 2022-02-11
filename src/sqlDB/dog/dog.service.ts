@@ -14,7 +14,7 @@ export class DogService {
     return await this.dogModel.findAll();
   }
 
-  async create(model: CreateDogDto): Promise<any> {
+  async create(model: any): Promise<any> {
     return await this.dogModel.create(model);
   }
 
@@ -22,7 +22,7 @@ export class DogService {
     return await this.dogModel.upsert(model);
   }
 
-  async delete(id): Promise<any> {
+  async delete(id: string): Promise<any> {
     return await this.dogModel.destroy({ where: { id } });
   }
 }

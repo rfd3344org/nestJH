@@ -47,7 +47,7 @@ export class LensWizardService {
     return lensWizard;
   }
 
-  async create(record: CreateLensWizardDto): Promise<any> {
+  async create(record: any): Promise<any> {
     return await this.lensWizardRepo.create(record);
   }
 
