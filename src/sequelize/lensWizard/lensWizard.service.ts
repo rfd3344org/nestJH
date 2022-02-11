@@ -55,9 +55,9 @@ export class LensWizardService {
     const { steps, ...updateQ } = record;
 
     recursive(steps, 'next', (item) => {
-      console.warn(item)
-    })
-    return
+      console.warn(item);
+    });
+    return;
     const stepsArr = flattenTree(steps, 'next');
 
     // update steps records
@@ -83,40 +83,56 @@ export class LensWizardService {
   }
 
   // decision APIs
-  async getDecisions({ wizardId }): Promise<Decision[]> {
+  async getDecisionByWizardId(wizardId): Promise<Decision[]> {
     return await this.decisionRepo.findAll({
       where: { wizardId },
       ...this.decisionOption,
     });
   }
 
+  async getDecisionById(id: string): Promise<Decision> {
+    return await this.decisionRepo.findOne({
+      where: { id },
+      ...this.decisionOption,
+    });
+  }
+
   async createDecision(wizardId: string, record: any): Promise<Decision> {
     const createQ = { wizardId, ...record };
-    return await this.decisionRepo.create(createQ, { include: Choice });
+    return this.decisionRepo.create(createQ, { include: Choice });
   }
 
   async updateDecision(id: string, record: any): Promise<any> {
     const { choices, ...updateQ } = record;
 
-    // update choices records
-    const choicesAll = await this.choiceRepo.findAll({
-      where: { decisionId: id },
-    });
-    const choices2Delete = _.differenceBy(choicesAll, choices, 'id');
-    await this.choiceRepo.destroy({
-      where: { id: _.map(choices2Delete, 'id') },
-    });
-    await this.choiceRepo.bulkCreate(choices, {
-      updateOnDuplicate: ['name', 'updatedAt'],
-    });
-
     await this.decisionRepo.update(updateQ, {
       where: { id },
     });
-    return true;
+
+    // update choices records
+
+    const choicesList = await this.choiceRepo.findAll({
+      where: { decisionId: id },
+    });
+    const choices2Delete = _.differenceBy(choicesList, choices, 'id');
+    await this.choiceRepo.destroy({
+      where: { id: _.map(choices2Delete, 'id') },
+    });
+
+    if (!_.isEmpty(choices)) {
+      const nextChoices = choices.map((item) => ({
+        decisionId: id,
+        ...item,
+      }));
+      await this.choiceRepo.bulkCreate(nextChoices, {
+        updateOnDuplicate: ['name', 'decisionId', 'updatedAt'],
+      });
+    }
+
+    return this.getDecisionById(id);
   }
 
-  async deleteDecision(id): Promise<any> {
+  async deleteDecision(id: string): Promise<any> {
     return this.decisionRepo.destroy({ where: { id } });
   }
 }

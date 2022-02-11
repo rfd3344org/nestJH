@@ -48,7 +48,7 @@ export class LensWizardController {
   @Get(':wizardId/decision')
   @ApiParam({ name: 'wizardId', example: '1' })
   async getAllDecision(@Param('wizardId') wizardId): Promise<any> {
-    return this.service.getDecisions({ wizardId });
+    return this.service.getDecisionByWizardId(wizardId);
   }
 
   @Post(':wizardId/decision')
