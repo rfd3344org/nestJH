@@ -12,4 +12,6 @@ export class File extends BaseModel {
 
   @Column
   type: string;
+
+
 }

@@ -31,9 +31,10 @@ export class AppConfigService {
   }
 
   get mongoDBUri(): string {
-    return this.envConfig.MONGO_URL;
-    // const { MONGO_DB_NAME, MONGO_USER, MONGO_PASSWORD } = this.envConfig;
-    // return `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0.giwpq.mongodb.net/${MONGO_DB_NAME}?retryWrites=true&w=majority`;
+    const { MONGO_USER, MONGO_PASSWORD, MONGO_CLUSTER, MONGO_DBNAME } =
+      this.envConfig;
+    // may need to add current IP on server side (Network Access) if it fail to connect
+    return `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_CLUSTER}/${MONGO_DBNAME}?retryWrites=true&w=majority`;
   }
 
   get sqlDbConfig(): any {

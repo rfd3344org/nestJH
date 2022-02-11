@@ -19,13 +19,3 @@ export abstract class BaseModel extends Model {
   @Column
   name: string;
 }
-
-
-
-export abstract class UUIDName {
-  @Column
-  id: string;
-
-  @Column
-  name: string;
-}

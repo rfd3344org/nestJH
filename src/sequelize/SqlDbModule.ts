@@ -15,8 +15,8 @@ import { LensWizardModule } from './lensWizard/lensWizard.module';
     }),
 
     DogModule,
-    // FileModule,
-    // LensWizardModule,
+    FileModule,
+    LensWizardModule,
   ],
 })
 export class SqlDbModule {}

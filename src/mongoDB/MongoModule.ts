@@ -9,9 +9,12 @@ import { AppConfigService } from '@/config/appConfig.service';
 @Module({
   imports: [
     MongooseModule.forRootAsync({
-      useFactory: async (configService: AppConfigService) => ({
-        uri: configService.mongoDBUri,
-      }),
+      useFactory: async (config: AppConfigService) => {
+        console.warn(config.mongoDBUri)
+        return {
+          uri: config.mongoDBUri,
+        };
+      },
       inject: [AppConfigService],
     }),
     CatsModule,
