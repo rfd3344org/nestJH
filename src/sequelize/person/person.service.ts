@@ -11,7 +11,9 @@ export class PersonService {
   ) {}
 
   async all(): Promise<Person[]> {
-    return await this.personModel.findAll();
+    return await this.personModel.findAll({
+      include: [Person],
+    });
   }
 
   async create(model: any): Promise<any> {
