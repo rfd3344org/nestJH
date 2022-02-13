@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { v4 as uuid } from 'uuid';
 
 import { buildTree, flattenTree } from '@/utils/array.utils';
-
+import { includeAll } from '@/utils/orm.utils';
 import { LensWizard, Decision, Choice, Step } from './lensWizard.model';
 import { CreateLensWizardDto } from './lensWizard.dto';
 
@@ -21,13 +21,13 @@ export class LensWizardService {
     private stepRepo: typeof Step,
   ) {}
 
-  private readonly lensWizardOption = {
-    include: [{ model: Decision, include: [Choice] }, Step],
-  };
+  // private readonly lensWizardOption = {
+  //   include: [{ model: Decision, include: [Choice] }, Step],
+  // };
 
-  private readonly decisionOption = {
-    include: [Choice],
-  };
+  // private readonly decisionOption = {
+  //   include: [Choice],
+  // };
 
   async all(): Promise<LensWizard[]> {
     return await this.lensWizardRepo.findAll();
@@ -36,7 +36,11 @@ export class LensWizardService {
   async findByPk(id: string): Promise<any> {
     const lensWizard = await this.lensWizardRepo.findByPk(
       id,
-      this.lensWizardOption,
+      includeAll,
+      // {
+      //   include:[ ...this.includeAll],
+      // },
+      // this.lensWizardOption,
     );
     if (!lensWizard) return lensWizard;
 
@@ -90,14 +94,14 @@ export class LensWizardService {
   async getDecisionByWizardId(wizardId): Promise<Decision[]> {
     return await this.decisionRepo.findAll({
       where: { wizardId },
-      ...this.decisionOption,
+      ...includeAll,
     });
   }
 
   async getDecisionById(id: string): Promise<Decision> {
     return await this.decisionRepo.findOne({
       where: { id },
-      ...this.decisionOption,
+      ...includeAll,
     });
   }
 

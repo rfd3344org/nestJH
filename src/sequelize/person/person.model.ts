@@ -38,13 +38,9 @@ export class Book extends BaseModel {
   @Column
   authorId: string;
 
-  // @BelongsTo(() => Person)
-  // author: Person;
 
   @ForeignKey(() => Person)
   @Column
   proofreaderId: string;
 
-  // @BelongsTo(() => Person)
-  // proofreader: Person;
 }

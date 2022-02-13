@@ -19,3 +19,5 @@ export abstract class BaseModel extends Model {
   @Column
   name: string;
 }
+
+export const includeAll: any = { include: [{ all: true }] };
