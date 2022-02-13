@@ -57,11 +57,11 @@ export class LensWizardService {
     // recursive(steps, 'next', (item, parent) => {
     //   console.warn(item, parent);
     // });
-    const stepsWithParentId =
-    _.cloneDeepWith(steps, (item, key) => {
-      console.warn(key);
-    });
-    return;
+    // const stepsWithParentId =
+    // _.cloneDeepWith(steps, (item, key) => {
+    //   console.warn(key);
+    // });
+    // return;
     const stepsArr = flattenTree(steps, 'next');
 
     // update steps records

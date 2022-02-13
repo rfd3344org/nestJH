@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Person } from './person.model';
+import { Person, Book } from './person.model';
 import { CreatePersonDto } from './person.dto';
 
 @Injectable()
@@ -12,12 +12,13 @@ export class PersonService {
 
   async all(): Promise<Person[]> {
     return await this.personModel.findAll({
-      include: [Person],
+      // include: [{ model: Book, association: 'authorId' }],
+      include: [{all: true}]
     });
   }
 
   async create(model: any): Promise<any> {
-    return await this.personModel.create(model);
+    return await this.personModel.create(model, { include: [{ all: true }] });
   }
 
   async update(model: any): Promise<any> {

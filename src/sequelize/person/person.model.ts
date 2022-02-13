@@ -4,7 +4,6 @@ import {
   ForeignKey,
   HasMany,
   BelongsTo,
-  Default,
 } from 'sequelize-typescript';
 import { BaseModel } from '@/utils/orm.utils';
 
@@ -23,8 +22,14 @@ export class Person extends BaseModel {
   address: string;
 
   @ForeignKey(() => Person)
-  @Column
+  @Column({ allowNull: true })
   parentId: string;
+
+  @HasMany(() => Book, 'authorId')
+  books: Book[];
+
+  @HasMany(() => Book, 'proofreaderId')
+  reads: Book[];
 }
 
 @Table({ tableName: 'book' })
@@ -33,13 +38,13 @@ export class Book extends BaseModel {
   @Column
   authorId: string;
 
-  @BelongsTo(() => Person)
-  author: Person;
+  // @BelongsTo(() => Person)
+  // author: Person;
 
   @ForeignKey(() => Person)
   @Column
   proofreaderId: string;
 
-  @BelongsTo(() => Person)
-  proofreader: Person;
+  // @BelongsTo(() => Person)
+  // proofreader: Person;
 }

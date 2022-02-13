@@ -3,7 +3,6 @@ import {
   Column,
   ForeignKey,
   HasMany,
-  BelongsTo,
   Default,
 } from 'sequelize-typescript';
 import { BaseModel } from '@/utils/orm.utils';
