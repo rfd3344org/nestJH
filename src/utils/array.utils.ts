@@ -3,17 +3,17 @@ import * as _ from 'lodash';
 export const recursive = (
   arr = [],
   recursiveKey = '',
-  callbackFn = (item) => {},
+  callbackFn = (item, parent) => {},
 ) => {
   for (let item of arr) {
-    callbackFn(_.cloneDeep(item));
+    callbackFn(_.cloneDeep(item), arr);
 
     const children = item[recursiveKey];
     if (!children || children.length === 0) {
       continue;
     }
 
-    recursive(children, recursiveKey, callbackFn);
+    recursive(children, recursiveKey, callbackFn.bind(null, item));
   }
 };
 

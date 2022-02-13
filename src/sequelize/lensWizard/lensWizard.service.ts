@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import * as _ from 'lodash';
 import { v4 as uuid } from 'uuid';
 
-import { recursive, buildTree, flattenTree } from '@/utils/array.utils';
+import { buildTree, flattenTree } from '@/utils/array.utils';
 
 import { LensWizard, Decision, Choice, Step } from './lensWizard.model';
 import { CreateLensWizardDto } from './lensWizard.dto';
@@ -54,8 +54,12 @@ export class LensWizardService {
   async update(id: string, record: any): Promise<any> {
     const { steps, ...updateQ } = record;
 
-    recursive(steps, 'next', (item) => {
-      console.warn(item);
+    // recursive(steps, 'next', (item, parent) => {
+    //   console.warn(item, parent);
+    // });
+    const stepsWithParentId =
+    _.cloneDeepWith(steps, (item, key) => {
+      console.warn(key);
     });
     return;
     const stepsArr = flattenTree(steps, 'next');
