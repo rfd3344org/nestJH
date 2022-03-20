@@ -28,14 +28,14 @@ export class AppController {
   @Get('test')
   async test(): Promise<any> {
     // return this.client.emit('math:wordcount', '1111');
-    const a = await this.client.send('math:wordcount', 'text');
-    console.warn('a', a.subscribe)
-    const b = await a.forEach(next => {
-      console.warn('next', next)
-    });
-    // await this.mailService.sendUserConfirmation();
-    // console.warn('b', b)
-    return `test ${a}`;
+    // const a = await this.client.send('math:wordcount', 'text');
+    // console.warn('a', a.subscribe)
+    // const b = await a.forEach(next => {
+    //   console.warn('next', next)
+    // });
+    // // await this.mailService.sendUserConfirmation();
+    // // console.warn('b', b)
+    // return `test ${a}`;
   }
 
   @Get('test2')
