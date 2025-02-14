@@ -10,16 +10,16 @@ export class User {
   readonly email: string;
 
   @Prop()
-   username: string;
+  username: string;
 
   @Prop()
-   password: string;
+  password: string;
 
   @Prop()
-   passPlain: string;
+  passPlain: string;
 
   @Prop()
-   fullname: string;
+  fullname: string;
 
   @Prop()
   readonly role: string;
