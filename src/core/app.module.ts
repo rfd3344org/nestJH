@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 
-import { AuthModule } from './auth/auth.module';
-import UserModule from './user/user.module';
-import { CatsModule } from './cats/cats.module';
+import { AuthModule } from 'src/auth/auth.module';
+import UserModule from 'src/user/user.module';
+import { CatsModule } from 'src/cats/cats.module';
+
 import { AppController } from './app.controller';
 
 const formatMongoURL = () => {

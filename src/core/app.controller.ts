@@ -16,6 +16,9 @@ export class AppController {
   @Get('demo')
   async testRoute(): Promise<any> {
 
-    return `demo`;
+    return {
+      message: 'Hello World!',
+      test: 'This is a test route21222',
+    };
   }
 }
