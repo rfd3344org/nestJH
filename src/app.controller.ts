@@ -13,9 +13,9 @@ export class AppController {
   }
 
 
-  @Get('test')
+  @Get('demo')
   async testRoute(): Promise<any> {
 
-    return `test`;
+    return `demo`;
   }
 }
