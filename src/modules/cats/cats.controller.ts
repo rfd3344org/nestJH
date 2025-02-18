@@ -8,8 +8,8 @@ import {
 } from '@nestjs/swagger';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './cat.dto';
-import { RolesGuard } from '@/auth/auth.guard';
-import { Roles } from '@/auth/roles/roles.decorator';
+import { RolesGuard } from '@/modules/auth/auth.guard';
+import { Roles } from '@/modules/auth/roles/roles.decorator';
 
 
 @Controller('cats')

@@ -8,10 +8,8 @@ export class AppController {
 
   @Get()
   async root(): Promise<any> {
-
     return `<a href="${process.env.SWAGGER_URL}">Go to Swagger Docs</a>`;
   }
-
 
   @Get('demo')
   async testRoute(): Promise<any> {
