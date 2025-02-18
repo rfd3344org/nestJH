@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from 'src/auth/auth.module';
 import UserModule from 'src/user/user.module';
 import { CatsModule } from 'src/cats/cats.module';
+import { PostModule } from 'src/modules/post/post.module';
 
 import { AppController } from './app.controller';
 
@@ -20,6 +21,7 @@ const formatMongoURL = () => {
     AuthModule,
     UserModule,
     CatsModule,
+    PostModule,
   ],
   controllers: [AppController],
 })

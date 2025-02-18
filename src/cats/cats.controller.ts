@@ -14,8 +14,7 @@ import { Roles } from '@/auth/roles/roles.decorator';
 
 @Controller('cats')
 @UseGuards(RolesGuard)
-
-@ApiTags('cats')
+@ApiTags('Cats')
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 

@@ -41,6 +41,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "env-cmd": "^10.1.0",
     "@nestjs/cli": "^11.0.2",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.9",
@@ -66,6 +67,9 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "jest": {
     "moduleFileExtensions": [
